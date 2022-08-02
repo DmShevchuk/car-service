@@ -1,0 +1,32 @@
+ALTER TABLE users
+    ADD id_of_role INTEGER,
+    ADD CONSTRAINT fk_role
+        FOREIGN KEY (id_of_role)
+            REFERENCES roles (role_id),
+
+    ADD id_of_discount INTEGER,
+    ADD CONSTRAINT fk_discount
+        FOREIGN KEY (id_of_discount)
+            REFERENCES discounts (discount_id);
+
+
+ALTER TABLE orders
+    ADD id_of_status       INTEGER,
+    ADD CONSTRAINT fk_order_status
+        FOREIGN KEY (id_of_status)
+            REFERENCES order_status (status_id),
+
+    ADD id_of_user         INTEGER,
+    ADD CONSTRAINT fk_user
+        FOREIGN KEY (id_of_user)
+            REFERENCES users (user_id),
+
+    ADD id_of_service_type INTEGER,
+    ADD CONSTRAINT fk_service_type
+        FOREIGN KEY (id_of_service_type)
+            REFERENCES service_type (service_type_id),
+
+    ADD id_of_box          INTEGER,
+    ADD CONSTRAINT fk_box
+        FOREIGN KEY (id_of_box)
+            REFERENCES boxes (box_id);
