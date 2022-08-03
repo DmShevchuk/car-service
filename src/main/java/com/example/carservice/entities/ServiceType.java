@@ -16,7 +16,7 @@ public class ServiceType {
     @Column(name = "service_type_id")
     private Long id;
 
-    @Column(name = "service_type_name")
+    @Column(name = "service_name")
     private String serviceName;
 
     @Column(name = "duration")

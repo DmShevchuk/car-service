@@ -16,7 +16,6 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-
     @Column(name = "appointment_date")
     private Date appointmentDate;
 

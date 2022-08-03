@@ -32,6 +32,4 @@ public class Box {
 
     @OneToMany(mappedBy = "box")
     private Set<Order> orders = new HashSet<>();
-
-
 }
