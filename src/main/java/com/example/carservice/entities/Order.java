@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -16,8 +17,11 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @Column(name = "appointment_date")
-    private Date appointmentDate;
+    @Column(name = "date")
+    private Date date;
+
+    @Column(name = "time")
+    private Time time;
 
     @ManyToOne
     @JoinColumn(name = "id_of_user")

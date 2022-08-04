@@ -3,6 +3,7 @@ package com.example.carservice.dto.serviceType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,7 @@ public class ServiceTypeSaveDTO {
     private String serviceName;
 
     @NotNull(message = "Service duration not specified!")
+    @DateTimeFormat(pattern = "HH:mm:SS")
     private Time duration;
 
     @NotNull(message = "Service price not specified!")

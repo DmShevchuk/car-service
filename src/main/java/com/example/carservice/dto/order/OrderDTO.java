@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.util.Date;
 
 @Getter
@@ -13,7 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class OrderDTO {
     private Long id;
-    private Date appointmentDate;
+    private Date date;
+    private Time time;
     private Long userId;
     private Long boxId;
     private ServiceTypeDTO serviceTypeDTO;
@@ -22,7 +24,8 @@ public class OrderDTO {
     public static OrderDTO toDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setAppointmentDate(order.getAppointmentDate());
+        orderDTO.setDate(order.getDate());
+        orderDTO.setTime(order.getTime());
         if (order.getUser() != null) {
             orderDTO.setUserId(order.getUser().getId());
         }

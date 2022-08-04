@@ -3,6 +3,7 @@ package com.example.carservice.dto.box;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,9 +17,11 @@ public class BoxSaveDTO {
     private String name;
 
     @NotNull(message = "Start work time not specified!")
+    @DateTimeFormat(pattern = "HH:mm:SS")
     private Time startWorkTime;
 
     @NotNull(message = "End work time not specified!")
+    @DateTimeFormat(pattern = "HH:mm:SS")
     private Time endWorkTime;
 
     @NotNull(message = "Time factor not specified!")
