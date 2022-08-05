@@ -4,6 +4,7 @@ import com.example.carservice.dto.serviceType.ServiceTypeDTO;
 import com.example.carservice.dto.serviceType.ServiceTypeSaveDTO;
 import com.example.carservice.entities.ServiceType;
 import com.example.carservice.services.ServiceTypeService;
+import com.example.carservice.utils.ServiceTypeSaveDtoValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,15 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/service-types")
 @RequiredArgsConstructor
 public class ServiceTypeController {
+
     private final ServiceTypeService serviceTypeService;
     private final ModelMapper modelMapper;
+    private final ServiceTypeSaveDtoValidator serviceTypeValidator;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceTypeDTO add(@Valid @RequestBody ServiceTypeSaveDTO serviceTypeSaveDTO){
-        ServiceType serviceType = modelMapper.map(serviceTypeSaveDTO, ServiceType.class);
+        ServiceType serviceType = serviceTypeValidator.validate(serviceTypeSaveDTO);
         return ServiceTypeDTO.toDTO(serviceTypeService.add(serviceType));
     }
 
@@ -48,7 +51,7 @@ public class ServiceTypeController {
     @ResponseStatus(HttpStatus.OK)
     public ServiceTypeDTO update(@PathVariable Long id,
                          @Valid @RequestBody ServiceTypeSaveDTO serviceTypeSaveDTO){
-        ServiceType serviceType = modelMapper.map(serviceTypeSaveDTO, ServiceType.class);
+        ServiceType serviceType = serviceTypeValidator.validate(serviceTypeSaveDTO);
         return ServiceTypeDTO.toDTO(serviceTypeService.update(id, serviceType));
     }
 
