@@ -30,6 +30,9 @@ public class Box {
     @Column(name = "time_factor")
     private Float timeFactor;
 
+    @Column(name = "twenty_four_hour")
+    private Boolean twentyFourHour = false;
+
     @OneToMany(mappedBy = "box")
     private Set<Order> orders = new HashSet<>();
 }

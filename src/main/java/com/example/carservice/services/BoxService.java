@@ -15,7 +15,9 @@ public class BoxService {
     private final BoxRepo boxRepo;
 
     public Box add(Box box){
-        if (boxRepo.existsByName(box.getName())){throw new BoxAlreadyExistsException(box.getName());}
+        if (boxRepo.existsByName(box.getName())){
+            throw new BoxAlreadyExistsException(box.getName());
+        }
         return boxRepo.save(box);
     }
 
@@ -24,16 +26,16 @@ public class BoxService {
         return boxRepo.save(box);
     }
 
+    public Box getBoxById(Long id){
+        return boxRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Box", id));
+    }
+
     public Page<Box> getAll(Pageable pageable){
         return boxRepo.findAll(pageable);
     }
 
     public void remove(Long id){
         boxRepo.deleteById(id);
-    }
-
-    public Box getBoxById(Long id){
-        return boxRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Box", id));
     }
 }

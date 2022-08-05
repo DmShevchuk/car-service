@@ -16,6 +16,7 @@ public class BoxDTO {
     private Time startWorkTime;
     private Time endWorkTime;
     private Float timeFactor;
+    private Boolean twentyFourHour;
 
     public static BoxDTO toDTO(Box box){
         BoxDTO boxDTO = new BoxDTO();
@@ -24,6 +25,7 @@ public class BoxDTO {
         boxDTO.setStartWorkTime(box.getStartWorkTime());
         boxDTO.setEndWorkTime(box.getEndWorkTime());
         boxDTO.setTimeFactor(box.getTimeFactor());
+        boxDTO.setTwentyFourHour(box.getTwentyFourHour());
         return boxDTO;
     }
 }
