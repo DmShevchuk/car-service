@@ -1,6 +1,7 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.User;
+import com.example.carservice.entities.enums.RoleEnum;
 import com.example.carservice.exceptions.EmailAlreadyExistsException;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.UserRepo;
@@ -13,11 +14,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepo userRepo;
+    private final UserRoleService roleService;
 
     public User registration(User userEntity) {
         if (userRepo.existsByEmail(userEntity.getEmail())) {
             throw new EmailAlreadyExistsException(userEntity.getEmail());
         }
+        userEntity.setRole(roleService.getRoleByName(RoleEnum.ROLE_USER.toString()));
         return userRepo.save(userEntity);
     }
 
@@ -39,5 +42,11 @@ public class UserService {
 
     public void remove(Long id) {
         userRepo.deleteById(id);
+    }
+
+    public User changeRole(Long id, String roleName) {
+        User user = getUserById(id);
+        user.setRole(roleService.getRoleByName(roleName));
+        return userRepo.save(user);
     }
 }

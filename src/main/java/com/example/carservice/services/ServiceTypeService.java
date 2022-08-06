@@ -3,6 +3,7 @@ package com.example.carservice.services;
 import com.example.carservice.entities.ServiceType;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.exceptions.ServiceTypeAlreadyExistsException;
+import com.example.carservice.exceptions.ServiceTypeNotFoundException;
 import com.example.carservice.repos.ServiceTypeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,5 +38,10 @@ public class ServiceTypeService {
     public ServiceType getServiceTypeById(Long id) {
         return serviceTypeRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("ServiceType", id));
+    }
+
+    public ServiceType getServiceTypeByName(String name) {
+        return serviceTypeRepo.findServiceTypeByServiceName(name)
+                .orElseThrow(() -> new ServiceTypeNotFoundException(name));
     }
 }

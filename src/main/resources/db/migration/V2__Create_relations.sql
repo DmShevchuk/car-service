@@ -1,5 +1,5 @@
 ALTER TABLE users
-    ADD id_of_role INTEGER,
+    ADD id_of_role     INTEGER,
     ADD CONSTRAINT fk_role
         FOREIGN KEY (id_of_role)
             REFERENCES roles (role_id),
@@ -30,3 +30,10 @@ ALTER TABLE orders
     ADD CONSTRAINT fk_box
         FOREIGN KEY (id_of_box)
             REFERENCES boxes (box_id);
+
+
+ALTER TABLE confirmations
+    ADD id_of_order INTEGER,
+    ADD CONSTRAINT fk_order
+        FOREIGN KEY (id_of_order)
+            REFERENCES orders (order_id);

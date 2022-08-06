@@ -25,8 +25,7 @@ public class DiscountController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public DiscountDTO add(@Valid @RequestBody DiscountSaveDTO discountSaveDTO){
-        Discount discount = modelMapper.map(discountSaveDTO, Discount.class);
-        return DiscountDTO.toDTO(discountService.add(discount));
+        return DiscountDTO.toDTO(discountService.add(discountSaveDTO));
     }
 
 

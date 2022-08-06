@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.sql.Time;
 import java.util.Date;
 
@@ -20,8 +21,8 @@ public class OrderSaveDTO {
     private Date date;
 
     @NotNull(message = "Service duration not specified!")
-    @DateTimeFormat(pattern = "HH:mm:SS")
-    private Time time;
+    @Pattern(regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Time does not match the pattern 'HH:mm'!")
+    private String time;
 
     @NotBlank(message = "Service type name not specified!")
     private String serviceTypeName;

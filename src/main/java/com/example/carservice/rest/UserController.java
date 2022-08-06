@@ -45,12 +45,19 @@ public class UserController {
     }
 
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUserById(@PathVariable Long id,
                                   @Valid @RequestBody UserSaveDTO userSaveDTO){
         User user = modelMapper.map(userSaveDTO, User.class);
         return UserDTO.toDTO(userService.update(id, user));
+    }
+
+    @PatchMapping("/{id}/roles")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO changeUserRole(@PathVariable Long id,
+                                  @RequestParam String roleName){
+        return UserDTO.toDTO(userService.changeRole(id, roleName));
     }
 
 

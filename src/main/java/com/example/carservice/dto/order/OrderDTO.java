@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -15,7 +15,7 @@ import java.util.Date;
 public class OrderDTO {
     private Long id;
     private Date date;
-    private Time time;
+    private LocalTime time;
     private Long userId;
     private Long boxId;
     private ServiceTypeDTO serviceTypeDTO;

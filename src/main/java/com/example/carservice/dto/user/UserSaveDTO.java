@@ -25,4 +25,6 @@ public class UserSaveDTO {
     @NotBlank(message = "Password not specified!")
     @Size(min = 8, message = "Password is too short: minimum size is 8!")
     private String password;
+
+    private String roleName;
 }

@@ -1,6 +1,8 @@
 package com.example.carservice.services;
 
+import com.example.carservice.dto.discount.DiscountSaveDTO;
 import com.example.carservice.entities.Discount;
+import com.example.carservice.entities.User;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.DiscountRepo;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +14,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DiscountService {
     private final DiscountRepo discountRepo;
+    private final UserService userService;
 
-    public Discount add(Discount discount){
+    public Discount add(DiscountSaveDTO discountSaveDTO){
+        User user = userService.getUserById(discountSaveDTO.getUserId());
+        Discount discount = new Discount();
+        discount.setMinDiscount(discountSaveDTO.getMinDiscount());
+        discount.setMaxDiscount(discountSaveDTO.getMaxDiscount());
         return discountRepo.save(discount);
     }
 
