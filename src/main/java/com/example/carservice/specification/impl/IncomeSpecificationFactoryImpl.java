@@ -58,12 +58,12 @@ public class IncomeSpecificationFactoryImpl implements IncomeSpecificationFactor
         Predicate predicate = cb.conjunction();
         if (timeFrom != null) {
             predicate = cb.and(predicate,
-                    cb.greaterThanOrEqualTo(orderRoot.get(Order_.time), timeFrom));
+                    cb.greaterThanOrEqualTo(orderRoot.get(Order_.timeStart), timeFrom));
         }
 
         if (timeUntil != null) {
             predicate = cb.and(predicate,
-                    cb.lessThanOrEqualTo(orderRoot.get(Order_.time), timeUntil));
+                    cb.lessThanOrEqualTo(orderRoot.get(Order_.timeStart), timeUntil));
         }
 
         if (dateFrom != null) {

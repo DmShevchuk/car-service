@@ -21,8 +21,11 @@ public class Order {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "time")
-    private LocalTime time;
+    @Column(name = "time_start")
+    private LocalTime timeStart;
+
+    @Column(name = "time_end")
+    private LocalTime timeEnd;
 
     @ManyToOne
     @JoinColumn(name = "id_of_user")

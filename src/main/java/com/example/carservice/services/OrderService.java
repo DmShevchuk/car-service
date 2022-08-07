@@ -3,16 +3,17 @@ package com.example.carservice.services;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Order;
+import com.example.carservice.entities.ServiceType;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.specification.impl.IncomeSpecificationFactoryImpl;
 import com.example.carservice.specification.impl.OrderSpecificationFactoryImpl;
-import com.example.carservice.utils.OrderSaveDtoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -20,7 +21,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepo orderRepo;
-    private final OrderSaveDtoValidator orderValidator;
     private final BoxService boxService;
     private final ServiceTypeService serviceTypeService;
     private final UserService userService;
@@ -28,13 +28,29 @@ public class OrderService {
     private final IncomeSpecificationFactoryImpl incomeSpecificationFactory;
     private final OrderSpecificationFactoryImpl orderSpecificationFactory;
 
-    public Order create(OrderSaveDTO orderDTO) {
+    public Order create(OrderSaveDTO orderDTO) throws ParseException {
         Order order = new Order();
-        order.setTime(orderValidator.parseOrderTime(orderDTO.getTime()));
-        order.setDate(orderDTO.getDate());
+
+        LocalTime time = orderDTO.getTime();
+        Date date = orderDTO.getDate();
+        ServiceType serviceType =  serviceTypeService.getServiceTypeByName(orderDTO.getServiceTypeName());
+        Box box = boxService.getBestBoxForOrder(time, date, serviceType.getDuration());
+
+        LocalTime serviceDuration = serviceType.getDuration();
+        order.setTimeStart(time);
+        int duration =Math.round((serviceDuration.getHour() * 60 + serviceDuration.getMinute()) / box.getTimeFactor());
+        int hours = duration / 60;
+        int minutes = duration % 60;
+        System.out.println(hours);
+        System.out.println(minutes);
+        order.setTimeStart(time);
+        LocalTime endTime = time.plusHours(hours).plusMinutes(minutes);
+
+        order.setTimeEnd(endTime);
+        order.setDate(date);
         order.setUser(userService.getUserById(orderDTO.getUserId()));
-        order.setBox(boxService.getBoxById(1L));
-        order.setServiceType(serviceTypeService.getServiceTypeByName(orderDTO.getServiceTypeName()));
+        order.setBox(box);
+        order.setServiceType(serviceType);
         order.setOrderStatus(orderStatusService.getOrderStatusById(1L));
         return orderRepo.save(order);
     }

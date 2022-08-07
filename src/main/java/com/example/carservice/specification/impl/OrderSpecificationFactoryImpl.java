@@ -44,10 +44,10 @@ public class OrderSpecificationFactoryImpl implements OrderSpecificationFactory 
             predicate = cb.and(predicate, cb.equal(orderRoot.get(Order_.box), box));
         }
         if (timeFrom != null) {
-            predicate = cb.and(predicate, cb.greaterThanOrEqualTo(orderRoot.get(Order_.time), timeFrom));
+            predicate = cb.and(predicate, cb.greaterThanOrEqualTo(orderRoot.get(Order_.timeStart), timeFrom));
         }
         if (timeUntil != null) {
-            predicate = cb.and(predicate, cb.lessThanOrEqualTo(orderRoot.get(Order_.time), timeUntil));
+            predicate = cb.and(predicate, cb.lessThanOrEqualTo(orderRoot.get(Order_.timeStart), timeUntil));
         }
         if (dateFrom != null) {
             predicate = cb.and(predicate, cb.greaterThanOrEqualTo(orderRoot.get(Order_.date), dateFrom));

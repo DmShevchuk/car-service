@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import com.example.carservice.entities.Box;
 
+import java.time.LocalTime;
+
 
 /**
  * Класс dto для объектов класса {@link Box}
@@ -27,15 +29,13 @@ public class BoxSaveDTO {
     /**
      * Время начала работы в формате HH:mm
      * */
-    @Pattern(regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Time does not match the pattern 'HH:mm'!")
-    private String startWorkTime;
+    private LocalTime startWorkTime;
 
 
     /**
      * Время окончания работы в формате HH:mm
      * */
-    @Pattern(regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Time does not match the pattern 'HH:mm'!")
-    private String endWorkTime;
+    private LocalTime endWorkTime;
 
 
     /**

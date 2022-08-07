@@ -4,7 +4,6 @@ import com.example.carservice.dto.box.BoxDTO;
 import com.example.carservice.dto.box.BoxSaveDTO;
 import com.example.carservice.entities.Box;
 import com.example.carservice.services.BoxService;
-import com.example.carservice.utils.BoxSaveDtoValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,15 +21,14 @@ public class BoxController {
 
     private final BoxService boxService;
     private final ModelMapper modelMapper;
-    private final BoxSaveDtoValidator boxValidator;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public BoxDTO add(@Valid @RequestBody BoxSaveDTO boxSaveDTO){
-        Box box = boxValidator.validate(boxSaveDTO);
+        Box box = modelMapper.map(boxSaveDTO, Box.class);
         return BoxDTO.toDTO(boxService.add(box));
     }
-
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -51,7 +49,7 @@ public class BoxController {
     @ResponseStatus(HttpStatus.OK)
     public BoxDTO update(@PathVariable Long id,
                          @Valid @RequestBody BoxSaveDTO boxSaveDTO){
-        Box box = boxValidator.validate(boxSaveDTO);
+        Box box = modelMapper.map(boxSaveDTO, Box.class);
         return BoxDTO.toDTO(boxService.update(id, box));
     }
 

@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -20,9 +21,8 @@ public class OrderSaveDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    @NotNull(message = "Service duration not specified!")
-    @Pattern(regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Time does not match the pattern 'HH:mm'!")
-    private String time;
+    @NotNull(message = "Time of appointment not specified!")
+    private LocalTime time;
 
     @NotBlank(message = "Service type name not specified!")
     private String serviceTypeName;

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -37,7 +38,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public OrderDTO add(@Valid @RequestBody OrderSaveDTO orderSaveDTO) {
+    public OrderDTO add(@Valid @RequestBody OrderSaveDTO orderSaveDTO) throws ParseException {
 
         Order createdOrder = orderService.create(orderSaveDTO);
         Confirmation confirmation = new Confirmation();

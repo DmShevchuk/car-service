@@ -15,7 +15,8 @@ import java.util.Date;
 public class OrderDTO {
     private Long id;
     private Date date;
-    private LocalTime time;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Long userId;
     private Long boxId;
     private ServiceTypeDTO serviceTypeDTO;
@@ -25,7 +26,8 @@ public class OrderDTO {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
         orderDTO.setDate(order.getDate());
-        orderDTO.setTime(order.getTime());
+        orderDTO.setStartTime(order.getTimeStart());
+        orderDTO.setEndTime(order.getTimeEnd());
         if (order.getUser() != null) {
             orderDTO.setUserId(order.getUser().getId());
         }
