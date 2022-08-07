@@ -2,14 +2,12 @@ package com.example.carservice.rest;
 
 import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
-import com.example.carservice.entities.Confirmation;
 import com.example.carservice.entities.Order;
-import com.example.carservice.services.ConfirmationService;
 import com.example.carservice.services.OrderService;
+import com.example.carservice.services.factories.ConfirmationFactory;
+import com.example.carservice.services.factories.OrderFactory;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,48 +16,25 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderService orderService;
     private final ModelMapper modelMapper;
-    private final ConfirmationService confirmationService;
-
-    @Value("${time.defaultZoneId}")
-    private String defaultZoneId;
-
-    @Value("${time.confirmationPeriodInMinutes}")
-    private Long confirmationPeriodInMinutes;
+    private final OrderService orderService;
+    private final ConfirmationFactory confirmationFactory;
+    private final OrderFactory orderFactory;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO add(@Valid @RequestBody OrderSaveDTO orderSaveDTO) throws ParseException {
-
-        Order createdOrder = orderService.create(orderSaveDTO);
-        Confirmation confirmation = new Confirmation();
-        System.out.println("expire at " + LocalDateTime.now(ZoneId.of(defaultZoneId)).plusMinutes(confirmationPeriodInMinutes));
-        confirmation.setExpireAt(LocalDateTime.now(ZoneId.of(defaultZoneId)).plusMinutes(confirmationPeriodInMinutes));
-
-        int length = 20;
-        boolean useLetters = true;
-        boolean useNumbers = true;
-
-        String generatedToken = RandomStringUtils.random(length, useLetters, useNumbers);
-
-        confirmation.setToken(generatedToken);
-
-
-        confirmation.setOrder(createdOrder);
-        confirmationService.createConfirmation(confirmation);
-        System.out.println("localhost:8080/api/v1/confirmation/" + generatedToken);
-
-
-        return OrderDTO.toDTO(createdOrder);
+        Order order = orderService.create(
+                orderFactory.buildOrder(orderSaveDTO)
+        );
+        confirmationFactory.createConfirmation(order);
+        return OrderDTO.toDTO(orderService.create(order));
     }
 
 
@@ -69,6 +44,7 @@ public class OrderController {
         Page<Order> orders = orderService.getAll(pageable);
         return orders.map(o -> modelMapper.map(o, OrderDTO.class));
     }
+
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -84,6 +60,7 @@ public class OrderController {
         Order order = modelMapper.map(orderSaveDTO, Order.class);
         return OrderDTO.toDTO(orderService.update(id, order));
     }
+
 
     @PatchMapping("/{id}/statuses")
     @ResponseStatus(HttpStatus.OK)

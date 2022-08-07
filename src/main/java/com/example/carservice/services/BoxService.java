@@ -9,45 +9,46 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BoxService {
     private final BoxRepo boxRepo;
 
-    public Box add(Box box){
-        if (boxRepo.existsByName(box.getName())){
+    @Transactional
+    public Box add(Box box) {
+        if (boxRepo.existsByName(box.getName())) {
             throw new BoxAlreadyExistsException(box.getName());
         }
         return boxRepo.save(box);
     }
 
-    public Box update(Long id, Box box){
+    @Transactional
+    public Box update(Long id, Box box) {
         box.setId(id);
         return boxRepo.save(box);
     }
 
-    public Box getBoxById(Long id){
+    public Box getBoxById(Long id) {
         return boxRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Box", id));
     }
 
-    public Page<Box> getAll(Pageable pageable){
+    public Page<Box> getAll(Pageable pageable) {
         return boxRepo.findAll(pageable);
     }
 
-    public void remove(Long id){
+    @Transactional
+    public void remove(Long id) {
         boxRepo.deleteById(id);
     }
 
-    public Box getBestBoxForOrder(LocalTime time, Date date, LocalTime basicDuration) throws ParseException{
+    public Box getBestBoxForOrder(LocalTime time, Date date, LocalTime basicDuration) throws ParseException {
         return boxRepo.findBestBoxForOrder(time.getHour(), time.getMinute(),
                         date,
                         basicDuration.getMinute())

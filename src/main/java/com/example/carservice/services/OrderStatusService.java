@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class OrderStatusService {
     private final OrderStatusRepo orderStatusRepo;
 
+    @Transactional
     public OrderStatus add(OrderStatus orderStatus) {
         if (orderStatusRepo.existsByStatusName(orderStatus.getStatusName())) {
             throw new OrderStatusAlreadyExistsException(orderStatus.getStatusName());
@@ -22,6 +24,7 @@ public class OrderStatusService {
         return orderStatusRepo.save(orderStatus);
     }
 
+    @Transactional
     public OrderStatus update(Long id, OrderStatus orderStatus) {
         orderStatus.setId(id);
         return orderStatusRepo.save(orderStatus);
@@ -31,6 +34,7 @@ public class OrderStatusService {
         return orderStatusRepo.findAll(pageable);
     }
 
+    @Transactional
     public void remove(Long id) {
         orderStatusRepo.deleteById(id);
     }

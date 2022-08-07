@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class ServiceTypeService {
     private final ServiceTypeRepo serviceTypeRepo;
 
+    @Transactional
     public ServiceType add(ServiceType serviceType) {
         if (serviceTypeRepo.existsByServiceName(serviceType.getServiceName())) {
             throw new ServiceTypeAlreadyExistsException(serviceType.getServiceName());
@@ -22,6 +24,7 @@ public class ServiceTypeService {
         return serviceTypeRepo.save(serviceType);
     }
 
+    @Transactional
     public ServiceType update(Long id, ServiceType serviceType) {
         serviceType.setId(id);
         return serviceTypeRepo.save(serviceType);
@@ -31,6 +34,7 @@ public class ServiceTypeService {
         return serviceTypeRepo.findAll(pageable);
     }
 
+    @Transactional
     public void remove(Long id) {
         serviceTypeRepo.deleteById(id);
     }

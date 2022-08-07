@@ -7,7 +7,9 @@ import com.example.carservice.exceptions.ConfirmationNotFoundException;
 import com.example.carservice.exceptions.ConfirmationTokenExpireException;
 import com.example.carservice.repos.ConfirmationRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -15,18 +17,24 @@ import java.time.ZoneId;
 @Service
 @RequiredArgsConstructor
 public class ConfirmationService {
-    private final ConfirmationRepo confirmationRepo;
     private final OrderService orderService;
+    private final ConfirmationRepo confirmationRepo;
 
-    public void createConfirmation(Confirmation confirmation){
+    @Value("${time.defaultZoneId}")
+    private String zoneId;
+
+    @Transactional
+    public void create(Confirmation confirmation){
         confirmationRepo.save(confirmation);
     }
+
 
     public Order confirmOrder(String token){
         Confirmation confirmation = confirmationRepo
                 .getConfirmationByToken(token)
                 .orElseThrow(() -> new ConfirmationNotFoundException(token));
-        LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
+        LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of(zoneId));
+
         LocalDateTime confirmationExpireAt = confirmation.getExpireAt();
         if (currentDateTime.compareTo(confirmationExpireAt) >= 0){
             throw new ConfirmationTokenExpireException(token);
@@ -36,6 +44,7 @@ public class ConfirmationService {
         return orderService.changeStatus(confirmation.getOrder().getId(), OrderStatusEnum.CONFIRMED.toString());
     }
 
+    @Transactional
     public void updateConfirmation(Confirmation confirmation){
         confirmationRepo.save(confirmation);
     }
