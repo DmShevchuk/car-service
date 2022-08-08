@@ -68,12 +68,12 @@ public class IncomeSpecificationFactoryImpl implements IncomeSpecificationFactor
 
         if (dateFrom != null) {
             predicate = cb.and(predicate,
-                    cb.greaterThanOrEqualTo(orderRoot.get(Order_.date), dateFrom));
+                    cb.greaterThanOrEqualTo(orderRoot.get(Order_.dateStart), dateFrom));
         }
 
         if (dateUntil != null) {
             predicate = cb.and(predicate,
-                    cb.lessThanOrEqualTo(orderRoot.get(Order_.date), dateUntil));
+                    cb.lessThanOrEqualTo(orderRoot.get(Order_.dateStart), dateUntil));
         }
 
         predicate = cb.and(predicate,

@@ -14,8 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class OrderDTO {
     private Long id;
-    private Date date;
+    private Date startDate;
     private LocalTime startTime;
+    private Date endDate;
     private LocalTime endTime;
     private Long userId;
     private Long boxId;
@@ -25,8 +26,9 @@ public class OrderDTO {
     public static OrderDTO toDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setDate(order.getDate());
+        orderDTO.setStartDate(order.getDateStart());
         orderDTO.setStartTime(order.getTimeStart());
+        orderDTO.setEndDate(order.getDateEnd());
         orderDTO.setEndTime(order.getTimeEnd());
         if (order.getUser() != null) {
             orderDTO.setUserId(order.getUser().getId());

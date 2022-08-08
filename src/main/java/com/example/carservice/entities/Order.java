@@ -18,14 +18,17 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "date_start")
+    private Date dateStart;
 
     @Column(name = "time_start")
     private LocalTime timeStart;
 
     @Column(name = "time_end")
     private LocalTime timeEnd;
+
+    @Column(name = "date_end")
+    private Date dateEnd;
 
     @ManyToOne
     @JoinColumn(name = "id_of_user")
