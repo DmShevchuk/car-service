@@ -53,4 +53,10 @@ public class UserService {
         user.setRole(roleService.getRoleByName(roleName));
         return userRepo.save(user);
     }
+
+    @Transactional
+    public void changePassword(User user, String password) {
+        user.setPassword(password);
+        userRepo.save(user);
+    }
 }

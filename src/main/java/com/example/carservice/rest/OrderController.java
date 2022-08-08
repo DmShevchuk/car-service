@@ -1,5 +1,6 @@
 package com.example.carservice.rest;
 
+import com.example.carservice.dto.discount.DiscountForUserDTO;
 import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Order;
@@ -69,6 +70,12 @@ public class OrderController {
         return OrderDTO.toDTO(orderService.changeStatus(id, newStatus));
     }
 
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO setDiscount(@PathVariable Long id,
+                                 @RequestParam DiscountForUserDTO discountForUser) {
+        return OrderDTO.toDTO(orderService.setDiscount(id, discountForUser));
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -1,5 +1,10 @@
 package com.example.carservice.entities.enums;
+import com.example.carservice.entities.Order;
 
+
+/**
+ * Enum для статуса заказов {@link Order}
+ * */
 public enum OrderStatusEnum {
     /**
      * Заказ ожидает подтверждения

@@ -31,6 +31,9 @@ public class Order {
     @Column(name = "date_end")
     private LocalDate dateEnd;
 
+    @Column(name = "total_price")
+    private Float totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "id_of_user")
     private User user;

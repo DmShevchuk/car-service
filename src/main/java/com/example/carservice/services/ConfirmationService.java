@@ -39,13 +39,12 @@ public class ConfirmationService {
         if (currentDateTime.compareTo(confirmationExpireAt) >= 0){
             throw new ConfirmationTokenExpireException(token);
         }
-        confirmation.setConfirmed(true);
-        updateConfirmation(confirmation);
+        delete(confirmation);
         return orderService.changeStatus(confirmation.getOrder().getId(), OrderStatusEnum.CONFIRMED.toString());
     }
 
     @Transactional
-    public void updateConfirmation(Confirmation confirmation){
-        confirmationRepo.save(confirmation);
+    public void delete(Confirmation confirmation){
+        confirmationRepo.delete(confirmation);
     }
 }

@@ -29,10 +29,9 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee addDiscount(Long employeeId, Discount discount){
-        Employee employee = getEmployeeById(employeeId);
+    public void addDiscount(Employee employee, Discount discount){
         employee.setDiscount(discount);
-        return employeeRepo.save(employee);
+        employeeRepo.save(employee);
     }
 
     @Transactional

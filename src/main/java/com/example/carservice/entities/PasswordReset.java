@@ -5,16 +5,15 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "confirmations")
+@Table(name = "password_resets")
 @Getter
 @Setter
-public class Confirmation {
+public class PasswordReset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "confirmation_id")
+    @Column(name = "reset_id")
     private Long id;
 
     @Column(name = "expire_at")
@@ -23,7 +22,10 @@ public class Confirmation {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "new_password")
+    private String newPassword;
+
     @OneToOne
-    @JoinColumn(name = "id_of_order")
-    private Order order;
+    @JoinColumn(name = "id_of_user")
+    private User user;
 }

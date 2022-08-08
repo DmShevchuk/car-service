@@ -20,6 +20,7 @@ public class EmployeeDTO {
     public static EmployeeDTO toDTO(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(employee.getId());
+        employeeDTO.setUser(UserDTO.toDTO(employee.getUser()));
         if (employee.getBox() != null){
             employeeDTO.setBox(BoxDTO.toDTO(employee.getBox()));
         }
