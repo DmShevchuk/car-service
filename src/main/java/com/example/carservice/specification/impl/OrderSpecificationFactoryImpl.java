@@ -13,9 +13,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -34,12 +31,12 @@ public class OrderSpecificationFactoryImpl implements OrderSpecificationFactory 
 
     @Override
     public Predicate createPredicateForOrders(CriteriaBuilder cb,
-                                                    Root<Order> orderRoot,
-                                                    Box box,
-                                                    LocalTime timeFrom,
-                                                    LocalTime timeUntil,
-                                                    LocalDate dateFrom,
-                                                    LocalDate dateUntil) {
+                                              Root<Order> orderRoot,
+                                              Box box,
+                                              LocalTime timeFrom,
+                                              LocalTime timeUntil,
+                                              LocalDate dateFrom,
+                                              LocalDate dateUntil) {
         Predicate predicate = cb.conjunction();
         if (box != null) {
             predicate = cb.and(predicate, cb.equal(orderRoot.get(Order_.box), box));
