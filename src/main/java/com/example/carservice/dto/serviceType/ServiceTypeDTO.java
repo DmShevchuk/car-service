@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.sql.Time;
 public class ServiceTypeDTO {
     private Long id;
     private String serviceName;
-    private Time duration;
+    private LocalTime duration;
     private Long price;
 
     public static ServiceTypeDTO toDTO(ServiceType serviceType){

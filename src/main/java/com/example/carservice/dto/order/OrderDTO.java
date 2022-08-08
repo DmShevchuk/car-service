@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -13,7 +15,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class OrderDTO {
     private Long id;
-    private Date appointmentDate;
+    private LocalDate dateStart;
+    private LocalTime timeStart;
+    private LocalDate dateEnd;
+    private LocalTime timeEnd;
     private Long userId;
     private Long boxId;
     private ServiceTypeDTO serviceTypeDTO;
@@ -22,7 +27,10 @@ public class OrderDTO {
     public static OrderDTO toDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setAppointmentDate(order.getAppointmentDate());
+        orderDTO.setDateStart(order.getDateStart());
+        orderDTO.setTimeStart(order.getTimeStart());
+        orderDTO.setDateEnd(order.getDateEnd());
+        orderDTO.setTimeEnd(order.getTimeEnd());
         if (order.getUser() != null) {
             orderDTO.setUserId(order.getUser().getId());
         }

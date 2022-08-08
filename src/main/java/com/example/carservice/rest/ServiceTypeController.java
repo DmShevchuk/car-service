@@ -18,6 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/service-types")
 @RequiredArgsConstructor
 public class ServiceTypeController {
+
     private final ServiceTypeService serviceTypeService;
     private final ModelMapper modelMapper;
 

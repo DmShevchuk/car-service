@@ -30,7 +30,6 @@ public class BoxController {
         return BoxDTO.toDTO(boxService.add(box));
     }
 
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<BoxDTO> getAll(@PageableDefault Pageable pageable){
@@ -38,11 +37,13 @@ public class BoxController {
         return boxes.map(b -> modelMapper.map(b, BoxDTO.class));
     }
 
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BoxDTO getBoxById(@PathVariable Long id){
         return BoxDTO.toDTO(boxService.getBoxById(id));
     }
+
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -51,6 +52,7 @@ public class BoxController {
         Box box = modelMapper.map(boxSaveDTO, Box.class);
         return BoxDTO.toDTO(boxService.update(id, box));
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

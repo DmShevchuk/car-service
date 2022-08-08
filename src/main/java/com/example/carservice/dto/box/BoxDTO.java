@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -13,9 +15,10 @@ import java.sql.Time;
 public class BoxDTO {
     private Long id;
     private String name;
-    private Time startWorkTime;
-    private Time endWorkTime;
+    private LocalTime startWorkTime;
+    private LocalTime endWorkTime;
     private Float timeFactor;
+    private Boolean twentyFourHour;
 
     public static BoxDTO toDTO(Box box){
         BoxDTO boxDTO = new BoxDTO();
@@ -24,6 +27,7 @@ public class BoxDTO {
         boxDTO.setStartWorkTime(box.getStartWorkTime());
         boxDTO.setEndWorkTime(box.getEndWorkTime());
         boxDTO.setTimeFactor(box.getTimeFactor());
+        boxDTO.setTwentyFourHour(box.getTwentyFourHour());
         return boxDTO;
     }
 }
