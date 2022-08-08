@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -29,8 +30,8 @@ public class IncomeSpecificationFactoryImpl implements IncomeSpecificationFactor
     @Override
     public Long getIncome(LocalTime timeFrom,
                           LocalTime timeUntil,
-                          Date dateFrom,
-                          Date dateUntil) {
+                          LocalDate dateFrom,
+                          LocalDate dateUntil) {
 
         EntityManager entityManager = sessionFactory.createEntityManager();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -53,8 +54,8 @@ public class IncomeSpecificationFactoryImpl implements IncomeSpecificationFactor
                                               Root<Order> orderRoot,
                                               LocalTime timeFrom,
                                               LocalTime timeUntil,
-                                              Date dateFrom,
-                                              Date dateUntil) {
+                                              LocalDate dateFrom,
+                                              LocalDate dateUntil) {
         Predicate predicate = cb.conjunction();
         if (timeFrom != null) {
             predicate = cb.and(predicate,

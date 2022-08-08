@@ -11,11 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -50,12 +47,12 @@ public class BoxService {
         boxRepo.deleteById(id);
     }
 
-    public Box getBestBoxForOrder(LocalTime time, Date date, LocalTime basicDuration) throws ParseException {
-        LocalDate localDate = date.toInstant()
-                .atZone(ZoneId.of("Europe/Moscow"))
-                .toLocalDate();
-        return boxRepo.findBestBoxForOrder(time.getHour(), time.getMinute(),
-                        localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(),
+    public Box getBestBoxForOrder(LocalTime time, LocalDate date, LocalTime basicDuration) {
+        return boxRepo.findBestBoxForOrder(time.getHour(),
+                        time.getMinute(),
+                        date.getYear(),
+                        date.getMonthValue(),
+                        date.getDayOfMonth(),
                         basicDuration.getMinute())
                 .orElseThrow(() -> new UnableToFindFreeBoxException(time, date));
     }

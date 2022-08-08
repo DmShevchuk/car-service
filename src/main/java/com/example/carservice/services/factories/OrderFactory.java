@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -29,11 +30,11 @@ public class OrderFactory {
     @Value("${time.defaultZoneId}")
     private String zoneId;
 
-    public Order buildOrder(OrderSaveDTO orderDTO) throws ParseException {
+    public Order buildOrder(OrderSaveDTO orderDTO){
         Order order = new Order();
 
         LocalTime time = orderDTO.getTime();
-        Date date = orderDTO.getDate();
+        LocalDate date = orderDTO.getDate();
         ServiceType serviceType = serviceTypeService.getServiceTypeByName(orderDTO.getServiceTypeName());
         Box box = boxService.getBestBoxForOrder(time, date, serviceType.getDuration());
         LocalDateTime endDateTime = countEndDateTime(time, date, serviceType.getDuration(), box.getTimeFactor());
@@ -41,9 +42,7 @@ public class OrderFactory {
         order.setTimeStart(time);
         order.setDateStart(date);
         order.setTimeEnd(endDateTime.toLocalTime());
-        order.setDateEnd(Date.from(endDateTime.toLocalDate().atStartOfDay()
-                .atZone(ZoneId.systemDefault())
-                .toInstant()));
+        order.setDateEnd(endDateTime.toLocalDate());
         order.setUser(userService.getUserById(orderDTO.getUserId()));
         order.setBox(box);
         order.setServiceType(serviceType);
@@ -51,12 +50,11 @@ public class OrderFactory {
         return order;
     }
 
-    private LocalDateTime countEndDateTime(LocalTime startTime, Date startDate,
+    private LocalDateTime countEndDateTime(LocalTime startTime, LocalDate startDate,
                                            LocalTime basicDuration, Float boxTimeFactor) {
         int minutesInHour = 60;
-        LocalDateTime localDateTime = LocalDateTime.of(startDate.toInstant()
-                .atZone(ZoneId.of(zoneId))
-                .toLocalDate(), startTime);
+
+        LocalDateTime localDateTime = LocalDateTime.of(startDate, startTime);
         int duration = Math.round(
                 (basicDuration.getHour() * minutesInHour + basicDuration.getMinute()) / boxTimeFactor);
         return localDateTime

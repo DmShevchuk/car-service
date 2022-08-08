@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +24,8 @@ public class OrderSpecificationFactoryImpl implements OrderSpecificationFactory 
     public Specification<Order> getSpecificationForOrders(Box box,
                                                           LocalTime timeFrom,
                                                           LocalTime timeUntil,
-                                                          Date dateFrom,
-                                                          Date dateUntil) {
+                                                          LocalDate dateFrom,
+                                                          LocalDate dateUntil) {
 
         return (root, query, cb) -> createPredicateForOrders(cb, root,
                 box, timeFrom,
@@ -37,8 +38,8 @@ public class OrderSpecificationFactoryImpl implements OrderSpecificationFactory 
                                                     Box box,
                                                     LocalTime timeFrom,
                                                     LocalTime timeUntil,
-                                                    Date dateFrom,
-                                                    Date dateUntil) {
+                                                    LocalDate dateFrom,
+                                                    LocalDate dateUntil) {
         Predicate predicate = cb.conjunction();
         if (box != null) {
             predicate = cb.and(predicate, cb.equal(orderRoot.get(Order_.box), box));

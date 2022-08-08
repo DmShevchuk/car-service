@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -18,8 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class OrderSaveDTO {
     @NotNull(message = "Date of appointment not specified!")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
 
     @NotNull(message = "Time of appointment not specified!")
     private LocalTime time;

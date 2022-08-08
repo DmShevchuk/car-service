@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -56,8 +57,8 @@ public class OrderService {
 
     public Long getIncome(LocalTime timeFrom,
                           LocalTime timeUntil,
-                          Date dateFrom,
-                          Date dateUntil) {
+                          LocalDate dateFrom,
+                          LocalDate dateUntil) {
         return incomeSpecificationFactory.getIncome(timeFrom, timeUntil, dateFrom, dateUntil);
     }
 
@@ -71,8 +72,8 @@ public class OrderService {
     public Page<Order> getOrdersByParameter(Box box,
                                             LocalTime timeFrom,
                                             LocalTime timeUntil,
-                                            Date dateFrom,
-                                            Date dateUntil,
+                                            LocalDate dateFrom,
+                                            LocalDate dateUntil,
                                             Pageable pageable) {
         return orderRepo.findAll(orderSpecificationFactory
                 .getSpecificationForOrders(box, timeFrom, timeUntil, dateFrom, dateUntil), pageable);

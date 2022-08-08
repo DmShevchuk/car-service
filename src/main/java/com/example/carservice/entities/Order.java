@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class Order {
     private Long id;
 
     @Column(name = "date_start")
-    private Date dateStart;
+    private LocalDate dateStart;
 
     @Column(name = "time_start")
     private LocalTime timeStart;
@@ -28,7 +29,7 @@ public class Order {
     private LocalTime timeEnd;
 
     @Column(name = "date_end")
-    private Date dateEnd;
+    private LocalDate dateEnd;
 
     @ManyToOne
     @JoinColumn(name = "id_of_user")

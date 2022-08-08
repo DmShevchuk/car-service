@@ -5,6 +5,7 @@ import com.example.carservice.entities.enums.OrderStatusEnum;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -16,8 +17,8 @@ public interface IncomeSpecificationFactory {
      * */
     Long getIncome(LocalTime timeFrom,
                    LocalTime timeUntil,
-                   Date dateFrom,
-                   Date dateUntil);
+                   LocalDate dateFrom,
+                   LocalDate dateUntil);
 
 
 
@@ -36,6 +37,6 @@ public interface IncomeSpecificationFactory {
             Root<Order> orderRoot,
             LocalTime timeFrom,
             LocalTime timeUntil,
-            Date dateFrom,
-            Date dateUntil);
+            LocalDate dateFrom,
+            LocalDate dateUntil);
 }

@@ -1,14 +1,15 @@
 package com.example.carservice.exceptions;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
 public class UnableToFindFreeBoxException extends RuntimeException{
     private final LocalTime time;
-    private final Date date;
+    private final LocalDate date;
 
-    public UnableToFindFreeBoxException(LocalTime time, Date date){
+    public UnableToFindFreeBoxException(LocalTime time, LocalDate date){
         this.time = time;
         this.date = date;
     }

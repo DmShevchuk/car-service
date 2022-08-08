@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +19,8 @@ public interface OrderSpecificationFactory {
     Specification<Order> getSpecificationForOrders(Box box,
                                                    LocalTime timeFrom,
                                                    LocalTime timeUntil,
-                                                   Date dateFrom,
-                                                   Date dateUntil);
+                                                   LocalDate dateFrom,
+                                                   LocalDate dateUntil);
 
 
 
@@ -40,6 +41,6 @@ public interface OrderSpecificationFactory {
             Box box,
             LocalTime timeFrom,
             LocalTime timeUntil,
-            Date dateFrom,
-            Date dateUntil);
+            LocalDate dateFrom,
+            LocalDate dateUntil);
 }

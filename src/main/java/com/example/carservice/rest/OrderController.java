@@ -42,7 +42,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public Page<OrderDTO> getAll(@PageableDefault Pageable pageable) {
         Page<Order> orders = orderService.getAll(pageable);
-        return orders.map(o -> modelMapper.map(o, OrderDTO.class));
+        return orders.map(OrderDTO::toDTO);
     }
 
 
