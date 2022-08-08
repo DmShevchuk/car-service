@@ -1,7 +1,6 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.Box;
-import com.example.carservice.entities.Order;
 import com.example.carservice.exceptions.BoxAlreadyExistsException;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.exceptions.UnableToFindFreeBoxException;
@@ -35,7 +34,7 @@ public class BoxService {
     @Transactional
     public Box update(Long id, Box box) {
         Box boxBeforeUpdate = getBoxById(id);
-        if (orderRepo.findAll(commonSpecificationBuilder.findActiveOrdersInBox(boxBeforeUpdate)).size() != 0){
+        if (orderRepo.findAll(commonSpecificationBuilder.findActiveOrdersInBox(boxBeforeUpdate)).size() != 0) {
             throw new RuntimeException();
         }
         box.setId(id);
@@ -53,6 +52,10 @@ public class BoxService {
 
     @Transactional
     public void remove(Long id) {
+        Box box = getBoxById(id);
+        if (orderRepo.findAll(commonSpecificationBuilder.findActiveOrdersInBox(box)).size() != 0) {
+            throw new RuntimeException();
+        }
         boxRepo.deleteById(id);
     }
 

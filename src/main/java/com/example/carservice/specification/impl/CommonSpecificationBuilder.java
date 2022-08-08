@@ -22,7 +22,7 @@ public class CommonSpecificationBuilder {
     }
 
 
-    public Specification<Order> findActiveOrdersInBox(Box box){
+    public Specification<Order> findActiveOrdersInBox(Box box) {
         return (root, query, cb) -> {
             Predicate predicate = cb.conjunction();
             predicate = cb.and(predicate, cb.equal(root.get(Order_.box), box));
