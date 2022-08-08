@@ -1,10 +1,13 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.Box;
+import com.example.carservice.entities.Order;
 import com.example.carservice.exceptions.BoxAlreadyExistsException;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.exceptions.UnableToFindFreeBoxException;
 import com.example.carservice.repos.BoxRepo;
+import com.example.carservice.repos.OrderRepo;
+import com.example.carservice.specification.impl.CommonSpecificationBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,8 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class BoxService {
     private final BoxRepo boxRepo;
+    private final OrderRepo orderRepo;
+    private final CommonSpecificationBuilder commonSpecificationBuilder;
 
     @Transactional
     public Box add(Box box) {
@@ -29,6 +34,10 @@ public class BoxService {
 
     @Transactional
     public Box update(Long id, Box box) {
+        Box boxBeforeUpdate = getBoxById(id);
+        if (orderRepo.findAll(commonSpecificationBuilder.findActiveOrdersInBox(boxBeforeUpdate)).size() != 0){
+            throw new RuntimeException();
+        }
         box.setId(id);
         return boxRepo.save(box);
     }
