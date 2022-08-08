@@ -2,9 +2,11 @@ package com.example.carservice.rest;
 
 import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.entities.Box;
+import com.example.carservice.entities.Employee;
 import com.example.carservice.entities.Order;
 import com.example.carservice.services.BoxService;
 import com.example.carservice.services.OrderService;
+import com.example.carservice.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,7 +25,7 @@ public class CommonController {
     private final OrderService orderService;
     private final BoxService boxService;
     private final ModelMapper modelMapper;
-
+    private final UserService userService;
 
     @GetMapping("/income")
     @ResponseStatus(HttpStatus.OK)

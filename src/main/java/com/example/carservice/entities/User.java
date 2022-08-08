@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @Setter
 public class User {
@@ -31,14 +32,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    private Employee employee;
+
     @ManyToOne
     @JoinColumn(name = "id_of_role")
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
-
-    @OneToOne
-    @JoinColumn(name = "id_of_discount")
-    private Discount discount;
 }
