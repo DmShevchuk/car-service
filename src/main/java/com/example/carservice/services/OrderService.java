@@ -1,12 +1,15 @@
 package com.example.carservice.services;
 
 import com.example.carservice.dto.discount.DiscountForUserDTO;
+import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Order;
 import com.example.carservice.entities.User;
 import com.example.carservice.entities.enums.OrderStatusEnum;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.OrderRepo;
+import com.example.carservice.services.factories.ConfirmationFactory;
+import com.example.carservice.services.factories.OrderFactory;
 import com.example.carservice.specification.impl.CommonSpecificationBuilder;
 import com.example.carservice.specification.impl.IncomeSpecificationFactoryImpl;
 import com.example.carservice.specification.impl.OrderSpecificationFactoryImpl;
@@ -23,6 +26,8 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepo orderRepo;
+    private final OrderFactory orderFactory;
+    private final ConfirmationFactory confirmationFactory;
     private final OrderStatusService orderStatusService;
     private final IncomeSpecificationFactoryImpl incomeSpecificationFactory;
     private final OrderSpecificationFactoryImpl orderSpecificationFactory;
@@ -42,9 +47,20 @@ public class OrderService {
 
 
     @Transactional
-    public Order update(Long id, Order order) {
-        order.setId(id);
-        return orderRepo.save(order);
+    public Order update(Long id, OrderSaveDTO orderSaveDTO) {
+        Order order = getOrderById(id);
+        String previousStatusName = order.getOrderStatus().getStatusName();
+        remove(id);
+        try {
+            Order newOrder = create(
+                    orderFactory.buildOrder(orderSaveDTO)
+            );
+            confirmationFactory.createConfirmation(order);
+            return orderRepo.save(newOrder);
+        }catch (Exception e){
+            changeStatus(id, previousStatusName);
+            return order;
+        }
     }
 
 
@@ -54,7 +70,9 @@ public class OrderService {
 
     @Transactional
     public void remove(Long id) {
-        orderRepo.deleteById(id);
+        Order order = getOrderById(id);
+        order.setOrderStatus(orderStatusService.getOrderStatusByName(OrderStatusEnum.CANCELED.toString()));
+        orderRepo.save(order);
     }
 
 

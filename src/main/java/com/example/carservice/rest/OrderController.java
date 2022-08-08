@@ -58,8 +58,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO update(@PathVariable Long id,
                            @Valid @RequestBody OrderSaveDTO orderSaveDTO) {
-        Order order = modelMapper.map(orderSaveDTO, Order.class);
-        return OrderDTO.toDTO(orderService.update(id, order));
+        return OrderDTO.toDTO(orderService.update(id, orderSaveDTO));
     }
 
 
