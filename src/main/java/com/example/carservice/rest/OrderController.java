@@ -2,8 +2,10 @@ package com.example.carservice.rest;
 
 import com.example.carservice.dto.discount.DiscountForUserDTO;
 import com.example.carservice.dto.order.OrderDTO;
+import com.example.carservice.dto.order.OrderPatchDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Order;
+import com.example.carservice.entities.enums.OrderStatusEnum;
 import com.example.carservice.services.OrderService;
 import com.example.carservice.services.factories.ConfirmationFactory;
 import com.example.carservice.services.factories.OrderFactory;
@@ -65,11 +67,12 @@ public class OrderController {
     @PatchMapping("/{id}/statuses")
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO changeStatus(@PathVariable Long id,
-                           @RequestParam String newStatus) {
+                                 @Valid @RequestBody OrderPatchDTO orderPatchDTO) {
+        String newStatus = orderPatchDTO.getOrderStatus().toString();
         return OrderDTO.toDTO(orderService.changeStatus(id, newStatus));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/discounts")
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO setDiscount(@PathVariable Long id,
                                  @RequestParam DiscountForUserDTO discountForUser) {

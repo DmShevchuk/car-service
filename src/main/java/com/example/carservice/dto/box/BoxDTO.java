@@ -1,6 +1,7 @@
 package com.example.carservice.dto.box;
 
 import com.example.carservice.entities.Box;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,15 +20,4 @@ public class BoxDTO {
     private LocalTime endWorkTime;
     private Float timeFactor;
     private Boolean twentyFourHour;
-
-    public static BoxDTO toDTO(Box box){
-        BoxDTO boxDTO = new BoxDTO();
-        boxDTO.setId(box.getId());
-        boxDTO.setName(box.getName());
-        boxDTO.setStartWorkTime(box.getStartWorkTime());
-        boxDTO.setEndWorkTime(box.getEndWorkTime());
-        boxDTO.setTimeFactor(box.getTimeFactor());
-        boxDTO.setTwentyFourHour(box.getTwentyFourHour());
-        return boxDTO;
-    }
 }
