@@ -2,6 +2,7 @@ package com.example.carservice.services;
 
 import com.example.carservice.entities.ServiceType;
 import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.IncorrectServiceTypeDuration;
 import com.example.carservice.exceptions.ServiceTypeAlreadyExistsException;
 import com.example.carservice.exceptions.ServiceTypeNotFoundException;
 import com.example.carservice.repos.ServiceTypeRepo;
@@ -10,40 +11,56 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalTime;
 
+
+/**
+ * Класс для работы с объектами {@link ServiceType}
+ * */
 @Service
 @RequiredArgsConstructor
 public class ServiceTypeService {
+
     private final ServiceTypeRepo serviceTypeRepo;
 
+
+    /**
+     * Добавление в систему нового типа услуги <br/>
+     * Происходит проверка на уникальность названия <br/>
+     * И проверка на корректность длительности услуги
+     * */
     @Transactional
     public ServiceType add(ServiceType serviceType) {
         if (serviceTypeRepo.existsByServiceName(serviceType.getServiceName())) {
             throw new ServiceTypeAlreadyExistsException(serviceType.getServiceName());
         }
+        if (serviceType.getDuration().equals(LocalTime.of(0, 0))){
+            throw new IncorrectServiceTypeDuration();
+        }
         return serviceTypeRepo.save(serviceType);
     }
 
-    @Transactional
-    public ServiceType update(Long id, ServiceType serviceType) {
-        serviceType.setId(id);
-        return serviceTypeRepo.save(serviceType);
-    }
 
+    /**
+     * Получение списка всех услуг
+     * */
     public Page<ServiceType> getAll(Pageable pageable) {
         return serviceTypeRepo.findAll(pageable);
     }
 
-    @Transactional
-    public void remove(Long id) {
-        serviceTypeRepo.deleteById(id);
-    }
 
+    /**
+     * Получение услуги по id
+     * */
     public ServiceType getServiceTypeById(Long id) {
         return serviceTypeRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("ServiceType", id));
     }
 
+
+    /**
+     * Получение услуги по имени
+     * */
     public ServiceType getServiceTypeByName(String name) {
         return serviceTypeRepo.findServiceTypeByServiceName(name)
                 .orElseThrow(() -> new ServiceTypeNotFoundException(name));

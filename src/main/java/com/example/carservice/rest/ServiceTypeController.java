@@ -19,14 +19,14 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ServiceTypeController {
 
-    private final ServiceTypeService serviceTypeService;
     private final ModelMapper modelMapper;
+    private final ServiceTypeService serviceTypeService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceTypeDTO add(@Valid @RequestBody ServiceTypeSaveDTO serviceTypeSaveDTO){
         ServiceType serviceType = modelMapper.map(serviceTypeSaveDTO, ServiceType.class);
-        return ServiceTypeDTO.toDTO(serviceTypeService.add(serviceType));
+        return modelMapper.map(serviceTypeService.add(serviceType), ServiceTypeDTO.class);
     }
 
 
@@ -41,23 +41,6 @@ public class ServiceTypeController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ServiceTypeDTO getServiceTypeById(@PathVariable Long id){
-        return ServiceTypeDTO.toDTO(serviceTypeService.getServiceTypeById(id));
-    }
-
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ServiceTypeDTO update(@PathVariable Long id,
-                         @Valid @RequestBody ServiceTypeSaveDTO serviceTypeSaveDTO){
-        ServiceType serviceType = modelMapper.map(serviceTypeSaveDTO, ServiceType.class);
-        return ServiceTypeDTO.toDTO(serviceTypeService.update(id, serviceType));
-    }
-
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String delete(@PathVariable Long id){
-        serviceTypeService.remove(id);
-        return String.format("Service with id=%d was deleted successfully!", id);
+        return modelMapper.map(serviceTypeService.getServiceTypeById(id), ServiceTypeDTO.class);
     }
 }
