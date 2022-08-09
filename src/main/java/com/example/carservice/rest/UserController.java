@@ -2,6 +2,7 @@ package com.example.carservice.rest;
 
 import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.dto.user.UserDTO;
+import com.example.carservice.dto.user.UserPatchDTO;
 import com.example.carservice.dto.user.UserSaveDTO;
 import com.example.carservice.entities.Order;
 import com.example.carservice.entities.User;
@@ -34,6 +35,12 @@ public class UserController {
         return users.map(u -> modelMapper.map(u, UserDTO.class));
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO getUserById(@PathVariable Long id){
+        return modelMapper.map(userService.getUserById(id), UserDTO.class);
+    }
+
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
     public Page<OrderDTO> getAllUserOrders(@PathVariable Long id,
@@ -44,33 +51,20 @@ public class UserController {
         return orders.map(OrderDTO::toDTO);
     }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUserById(@PathVariable Long id){
-        return UserDTO.toDTO(userService.getUserById(id));
-    }
-
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUserById(@PathVariable Long id,
                                   @Valid @RequestBody UserSaveDTO userSaveDTO){
         User user = modelMapper.map(userSaveDTO, User.class);
-        return UserDTO.toDTO(userService.update(id, user));
+        return modelMapper.map(userService.update(id, user), UserDTO.class);
     }
+
 
     @PatchMapping("/{id}/roles")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO changeUserRole(@PathVariable Long id,
-                                  @RequestParam String roleName){
-        return UserDTO.toDTO(userService.changeRole(id, roleName));
-    }
-
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String deleteUserById(@PathVariable Long id){
-        userService.remove(id);
-        return "User was deleted successfully!";
+                                  @Valid @RequestBody UserPatchDTO userPatchDTO){
+        return modelMapper.map(userService.changeRole(id, userPatchDTO.getNewRole()), UserDTO.class);
     }
 }

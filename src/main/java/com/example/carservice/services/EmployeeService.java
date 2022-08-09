@@ -22,7 +22,7 @@ public class EmployeeService {
     public Employee add(EmployeeSaveDTO employeeDTO){
         Employee employee = new Employee();
         User user = userService.getUserById(employeeDTO.getUserId());
-        userService.changeRole(user.getId(), RoleEnum.ROLE_OPERATOR.toString());
+        userService.changeRole(user.getId(), RoleEnum.ROLE_OPERATOR);
         employee.setUser(user);
         employee.setBox(boxService.getBoxById(employeeDTO.getBoxId()));
         return employeeRepo.save(employee);

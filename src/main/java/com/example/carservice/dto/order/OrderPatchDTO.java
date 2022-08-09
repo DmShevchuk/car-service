@@ -12,5 +12,5 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class OrderPatchDTO {
     @NotNull(message = "New order status should be specified!")
-    public OrderStatusEnum orderStatus;
+    private OrderStatusEnum orderStatus;
 }

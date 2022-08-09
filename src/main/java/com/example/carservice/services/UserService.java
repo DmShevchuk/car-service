@@ -22,14 +22,13 @@ public class UserService {
         if (userRepo.existsByEmail(userEntity.getEmail())) {
             throw new EmailAlreadyExistsException(userEntity.getEmail());
         }
-        userEntity.setRole(roleService.getRoleByName(RoleEnum.ROLE_USER.toString()));
+        userEntity.setRole(roleService.getRoleByName(RoleEnum.ROLE_USER));
         return userRepo.save(userEntity);
     }
 
     public Page<User> getAll(Pageable pageable) {
         return userRepo.findAll(pageable);
     }
-
 
     public User getUserById(Long id) {
         return userRepo.findById(id)
@@ -43,20 +42,9 @@ public class UserService {
     }
 
     @Transactional
-    public void remove(Long id) {
-        userRepo.deleteById(id);
-    }
-
-    @Transactional
-    public User changeRole(Long id, String roleName) {
+    public User changeRole(Long id, RoleEnum role) {
         User user = getUserById(id);
-        user.setRole(roleService.getRoleByName(roleName));
+        user.setRole(roleService.getRoleByName(role));
         return userRepo.save(user);
-    }
-
-    @Transactional
-    public void changePassword(User user, String password) {
-        user.setPassword(password);
-        userRepo.save(user);
     }
 }

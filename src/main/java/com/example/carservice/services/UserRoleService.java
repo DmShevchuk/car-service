@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 public class UserRoleService {
     private final UserRoleRepo roleRepo;
 
-    public Role getRoleByName(String roleName){
-        return roleRepo.findByRoleName(roleName)
-                .orElseThrow(() -> new UserRoleNotFoundException(roleName));
+    public Role getRoleByName(RoleEnum roleEnum){
+        return roleRepo.findByRoleName(roleEnum.toString())
+                .orElseThrow(() -> new UserRoleNotFoundException(roleEnum.toString()));
     }
 }
