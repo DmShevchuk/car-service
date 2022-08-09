@@ -17,7 +17,6 @@ import java.time.ZoneId;
 @Service
 @RequiredArgsConstructor
 public class ConfirmationService {
-    private final OrderService orderService;
     private final ConfirmationRepo confirmationRepo;
 
     @Value("${time.defaultZoneId}")
@@ -29,7 +28,7 @@ public class ConfirmationService {
     }
 
 
-    public Order confirmOrder(String token){
+    public Long confirmOrder(String token){
         Confirmation confirmation = confirmationRepo
                 .getConfirmationByToken(token)
                 .orElseThrow(() -> new ConfirmationNotFoundException(token));
@@ -40,7 +39,7 @@ public class ConfirmationService {
             throw new ConfirmationTokenExpireException(token);
         }
         delete(confirmation);
-        return orderService.changeStatus(confirmation.getOrder().getId(), OrderStatusEnum.CONFIRMED.toString());
+        return confirmation.getOrder().getId();
     }
 
     @Transactional
