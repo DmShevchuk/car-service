@@ -53,6 +53,7 @@ public class ScheduledDaemon {
         int day = timestamp.getDayOfMonth();
         int hour = timestamp.getHour();
         int minutes = timestamp.getMinute();
+
         orderRepo.updateConfirmedToCanceled(hour, minutes, year, month, day);
         orderRepo.updateCheckedInToInProgress(hour, minutes, year, month, day);
         orderRepo.updateInProgressToFinished(hour, minutes, year, month, day);

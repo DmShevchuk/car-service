@@ -46,7 +46,6 @@ public class OrderFactory {
         order.setUser(userService.getUserById(orderDTO.getUserId()));
         order.setBox(box);
         order.setServiceType(serviceType);
-        order.setTotalPrice(serviceType.getPrice().floatValue());
         order.setOrderStatus(orderStatusService.getOrderStatusByName(OrderStatusEnum.AWAITING_CONFIRMATION.toString()));
         return order;
     }

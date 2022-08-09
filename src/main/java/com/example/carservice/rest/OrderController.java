@@ -1,11 +1,9 @@
 package com.example.carservice.rest;
 
-import com.example.carservice.dto.discount.DiscountForUserDTO;
 import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.dto.order.OrderPatchDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Order;
-import com.example.carservice.entities.enums.OrderStatusEnum;
 import com.example.carservice.services.OrderService;
 import com.example.carservice.services.factories.ConfirmationFactory;
 import com.example.carservice.services.factories.OrderFactory;
@@ -25,10 +23,11 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final ModelMapper modelMapper;
+
     private final OrderService orderService;
     private final ConfirmationFactory confirmationFactory;
     private final OrderFactory orderFactory;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
@@ -72,12 +71,6 @@ public class OrderController {
         return OrderDTO.toDTO(orderService.changeStatus(id, newStatus));
     }
 
-    @PatchMapping("/{id}/discounts")
-    @ResponseStatus(HttpStatus.OK)
-    public OrderDTO setDiscount(@PathVariable Long id,
-                                 @RequestParam DiscountForUserDTO discountForUser) {
-        return OrderDTO.toDTO(orderService.setDiscount(id, discountForUser));
-    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

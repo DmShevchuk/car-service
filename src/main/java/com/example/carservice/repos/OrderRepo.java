@@ -16,7 +16,7 @@ public interface OrderRepo extends JpaRepository<Order, Long>, JpaSpecificationE
             UPDATE orders
             SET id_of_status = (SELECT status_id FROM order_status WHERE status_name = 'CANCELED')
             WHERE
-            (date_start + time_start) >= make_timestamp(:y, :mon, :d, :h, :min, 0)
+            (date_start + time_start) <= make_timestamp(:y, :mon, :d, :h, :min, 0)
             AND
             id_of_status = (SELECT status_id FROM order_status WHERE status_name = 'CONFIRMED')
             """, nativeQuery = true)
@@ -31,9 +31,9 @@ public interface OrderRepo extends JpaRepository<Order, Long>, JpaSpecificationE
             UPDATE orders
             SET id_of_status = (SELECT status_id FROM order_status WHERE status_name = 'IN_PROGRESS')
             WHERE
-            (date_start + time_start) >= make_timestamp(:y, :mon, :d, :h, :min, 0)
+            (date_start + time_start) <= make_timestamp(:y, :mon, :d, :h, :min, 0)
             AND
-            (date_end + time_end) < make_timestamp(:y, :mon, :d, :h, :min, 0)
+            (date_end + time_end) > make_timestamp(:y, :mon, :d, :h, :min, 0)
             AND
             id_of_status = (SELECT status_id FROM order_status WHERE status_name = 'CLIENT_CHECKED_IN')
             """, nativeQuery = true)
@@ -47,7 +47,7 @@ public interface OrderRepo extends JpaRepository<Order, Long>, JpaSpecificationE
             UPDATE orders
             SET id_of_status = (SELECT status_id FROM order_status WHERE status_name = 'FINISHED')
             WHERE
-            (date_end + time_end) >= make_timestamp(:y, :mon, :d, :h, :min, 0)
+            (date_end + time_end) <= make_timestamp(:y, :mon, :d, :h, :min, 0)
             AND
             id_of_status = (SELECT status_id FROM order_status WHERE status_name = 'IN_PROGRESS')
          """, nativeQuery = true)

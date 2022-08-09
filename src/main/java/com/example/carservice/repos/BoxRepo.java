@@ -29,11 +29,11 @@ public interface BoxRepo extends JpaRepository<Box, Long>, JpaSpecificationExecu
             SELECT box.*
             FROM boxes box
                      LEFT JOIN orders ord ON box.box_id = ord.id_of_box
-                     LEFT JOIN order_status order_st ON order_st.status_id = ord.id_of_status
+                     JOIN order_status order_st ON order_st.status_id = ord.id_of_status
             WHERE
                 (order_st.status_name NOT IN ('CANCELED', 'FINISHED'))
-              AND (ord.date_start = make_date(:y, :mon, :d))
-              AND (ord.date_start = make_date(:y, :mon, :d + 1))
+              AND ((ord.date_start = make_date(:y, :mon, :d))
+              OR (ord.date_start = make_date(:y, :mon, :d + 1)))
               AND ( -- Случай, при котором время новой записи находится внутри уже созданных заказов
                     (((ord.date_start + ord.time_start) <= make_timestamp(:y, :mon, :d, :h, :min, 0))
                         AND

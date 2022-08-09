@@ -1,6 +1,5 @@
 package com.example.carservice.services;
 
-import com.example.carservice.dto.discount.DiscountForUserDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Order;
@@ -98,16 +97,6 @@ public class OrderService {
                                             Pageable pageable) {
         return orderRepo.findAll(orderSpecificationFactory
                 .getSpecificationForOrders(box, timeFrom, timeUntil, dateFrom, dateUntil), pageable);
-    }
-
-    public Order setDiscount(Long id, DiscountForUserDTO discountForUser) {
-        Order order = getOrderById(id);
-        if (order.getOrderStatus().getStatusName().equals("CANCELED")
-                || order.getOrderStatus().getStatusName().equals("FINISHED")) {
-            throw new RuntimeException();
-        }
-        order.setTotalPrice(order.getTotalPrice() * (100 - discountForUser.getDiscount()));
-        return orderRepo.save(order);
     }
 
     public Page<Order> getAllByUserAndStatus(User user, OrderStatusEnum orderStatus, Pageable pageable) {

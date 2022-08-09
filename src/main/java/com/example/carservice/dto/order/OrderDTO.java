@@ -1,6 +1,5 @@
 package com.example.carservice.dto.order;
 
-import com.example.carservice.dto.serviceType.ServiceTypeDTO;
 import com.example.carservice.entities.Order;
 import com.example.carservice.entities.ServiceType;
 import lombok.Getter;
@@ -19,7 +18,6 @@ public class OrderDTO {
     private LocalTime timeStart;
     private LocalDate dateEnd;
     private LocalTime timeEnd;
-    private Float totalPrice;
     private Long userId;
     private Long boxId;
     private ServiceType serviceType;
@@ -32,7 +30,6 @@ public class OrderDTO {
         orderDTO.setTimeStart(order.getTimeStart());
         orderDTO.setDateEnd(order.getDateEnd());
         orderDTO.setTimeEnd(order.getTimeEnd());
-        orderDTO.setTotalPrice(order.getTotalPrice());
         if (order.getUser() != null) {
             orderDTO.setUserId(order.getUser().getId());
         }
