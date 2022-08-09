@@ -9,9 +9,9 @@ import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.services.factories.ConfirmationFactory;
 import com.example.carservice.services.factories.OrderFactory;
+import com.example.carservice.specification.IncomeSpecificationFactory;
 import com.example.carservice.specification.impl.CommonSpecificationBuilder;
-import com.example.carservice.specification.impl.IncomeSpecificationFactoryImpl;
-import com.example.carservice.specification.impl.OrderSpecificationFactoryImpl;
+import com.example.carservice.specification.OrderSpecificationFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +28,8 @@ public class OrderService {
     private final OrderFactory orderFactory;
     private final ConfirmationFactory confirmationFactory;
     private final OrderStatusService orderStatusService;
-    private final IncomeSpecificationFactoryImpl incomeSpecificationFactory;
-    private final OrderSpecificationFactoryImpl orderSpecificationFactory;
+    private final IncomeSpecificationFactory incomeSpecificationFactory;
+    private final OrderSpecificationFactory orderSpecificationFactory;
     private final CommonSpecificationBuilder specificationBuilder;
 
     @Transactional
@@ -44,17 +44,15 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
-
     @Transactional
     public Order update(Long id, OrderSaveDTO orderSaveDTO) {
         Order order = getOrderById(id);
         String previousStatusName = order.getOrderStatus().getStatusName();
         remove(id);
         try {
-            Order newOrder = create(
-                    orderFactory.buildOrder(orderSaveDTO)
-            );
-            confirmationFactory.createConfirmation(order);
+            Order newOrder = create(orderFactory.buildOrder(orderSaveDTO));
+            confirmationFactory.createConfirmation(newOrder);
+            newOrder.setId(id);
             return orderRepo.save(newOrder);
         }catch (Exception e){
             changeStatus(id, previousStatusName);

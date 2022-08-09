@@ -4,7 +4,7 @@ import com.example.carservice.entities.enums.OrderStatusEnum;
 import com.example.carservice.repos.ConfirmationRepo;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.services.OrderService;
-import com.example.carservice.specification.impl.OrderConfirmSpecificationFactoryImpl;
+import com.example.carservice.specification.OrderConfirmSpecificationFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -24,7 +24,7 @@ public class ScheduledDaemon {
     private final OrderRepo orderRepo;
     private final OrderService orderService;
     private final ConfirmationRepo confirmationRepo;
-    private final OrderConfirmSpecificationFactoryImpl orderConfirmSpecificationFactory;
+    private final OrderConfirmSpecificationFactory orderConfirmSpecificationFactory;
 
     @Async
     @Transactional

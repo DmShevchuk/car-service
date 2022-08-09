@@ -4,9 +4,9 @@ import com.example.carservice.dto.employee.EmployeeSaveDTO;
 import com.example.carservice.entities.Discount;
 import com.example.carservice.entities.Employee;
 import com.example.carservice.entities.User;
-import com.example.carservice.entities.enums.RoleEnum;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.EmployeeRepo;
+import com.example.carservice.security.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ public class EmployeeService {
     public Employee add(EmployeeSaveDTO employeeDTO){
         Employee employee = new Employee();
         User user = userService.getUserById(employeeDTO.getUserId());
-        userService.changeRole(user.getId(), RoleEnum.ROLE_OPERATOR);
+        userService.changeRole(user.getId(), Role.ROLE_OPERATOR);
         employee.setUser(user);
         employee.setBox(boxService.getBoxById(employeeDTO.getBoxId()));
         return employeeRepo.save(employee);

@@ -1,5 +1,6 @@
 package com.example.carservice.entities;
 
+import com.example.carservice.security.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "role")
+    private Role role;
+
     @Column(name = "email")
     private String email;
 
@@ -34,10 +38,6 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Employee employee;
-
-    @ManyToOne
-    @JoinColumn(name = "id_of_role")
-    private Role role;
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new HashSet<>();

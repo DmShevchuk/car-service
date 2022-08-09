@@ -1,10 +1,3 @@
-ALTER TABLE users
-    ADD id_of_role     INTEGER,
-    ADD CONSTRAINT fk_role
-        FOREIGN KEY (id_of_role)
-            REFERENCES roles (role_id);
-
-
 ALTER TABLE orders
     ADD id_of_status       INTEGER,
     ADD CONSTRAINT fk_order_status

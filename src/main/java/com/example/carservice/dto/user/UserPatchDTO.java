@@ -1,6 +1,6 @@
 package com.example.carservice.dto.user;
 
-import com.example.carservice.entities.enums.RoleEnum;
+import com.example.carservice.security.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,5 +11,5 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserPatchDTO {
     @NotNull(message = "New user role should be specified!")
-    private RoleEnum newRole;
+    private Role newRole;
 }

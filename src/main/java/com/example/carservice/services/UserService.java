@@ -1,13 +1,14 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.User;
-import com.example.carservice.entities.enums.RoleEnum;
 import com.example.carservice.exceptions.EmailAlreadyExistsException;
 import com.example.carservice.exceptions.EntityNotFoundException;
 import com.example.carservice.repos.UserRepo;
+import com.example.carservice.security.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,15 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepo userRepo;
-    private final UserRoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User registration(User userEntity) {
-        if (userRepo.existsByEmail(userEntity.getEmail())) {
-            throw new EmailAlreadyExistsException(userEntity.getEmail());
+    public User registration(User user) {
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new EmailAlreadyExistsException(user.getEmail());
         }
-        userEntity.setRole(roleService.getRoleByName(RoleEnum.ROLE_USER));
-        return userRepo.save(userEntity);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
+        return userRepo.save(user);
     }
 
     public Page<User> getAll(Pageable pageable) {
@@ -42,9 +44,9 @@ public class UserService {
     }
 
     @Transactional
-    public User changeRole(Long id, RoleEnum role) {
+    public User changeRole(Long id, Role role) {
         User user = getUserById(id);
-        user.setRole(roleService.getRoleByName(role));
+        user.setRole(role);
         return userRepo.save(user);
     }
 }
