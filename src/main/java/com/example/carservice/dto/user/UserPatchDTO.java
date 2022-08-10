@@ -4,15 +4,12 @@ import com.example.carservice.security.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDTO {
-    private Long id;
-    private String userName;
-    private String middleName;
-    private String lastName;
-    private String email;
-    private Role role;
+public class UserPatchDTO {
+    @NotNull(message = "New user role should be specified!")
+    private Role newRole;
 }

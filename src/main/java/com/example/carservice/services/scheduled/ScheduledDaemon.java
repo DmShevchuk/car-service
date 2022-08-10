@@ -2,8 +2,9 @@ package com.example.carservice.services.scheduled;
 
 import com.example.carservice.entities.enums.OrderStatusEnum;
 import com.example.carservice.repos.ConfirmationRepo;
+import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.services.OrderService;
-import com.example.carservice.specification.impl.OrderConfirmSpecificationFactoryImpl;
+import com.example.carservice.specification.OrderConfirmSpecificationFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -20,9 +21,10 @@ import java.time.ZoneId;
 @EnableAsync
 @RequiredArgsConstructor
 public class ScheduledDaemon {
+    private final OrderRepo orderRepo;
     private final OrderService orderService;
     private final ConfirmationRepo confirmationRepo;
-    private final OrderConfirmSpecificationFactoryImpl orderConfirmSpecificationFactory;
+    private final OrderConfirmSpecificationFactory orderConfirmSpecificationFactory;
 
     @Async
     @Transactional
@@ -42,7 +44,19 @@ public class ScheduledDaemon {
 
     @Async
     @Transactional
-    @Scheduled(cron = "0 */5 * ? * *")
+    @Scheduled(cron = "0 * * ? * *")
     public void updateOrderStatuses() {
+        LocalDateTime timestamp = LocalDateTime.now();
+
+        int year = timestamp.getYear();
+        int month = timestamp.getMonthValue();
+        int day = timestamp.getDayOfMonth();
+        int hour = timestamp.getHour();
+        int minutes = timestamp.getMinute();
+
+        orderRepo.updateConfirmedToCanceled(hour, minutes, year, month, day);
+        orderRepo.updateCheckedInToInProgress(hour, minutes, year, month, day);
+        orderRepo.updateInProgressToFinished(hour, minutes, year, month, day);
+        log.info("Order statuses updated successfully!");
     }
 }

@@ -23,9 +23,6 @@ public class Confirmation {
     @Column(name = "token")
     private String token;
 
-    @Column(name = "confirmed")
-    private Boolean confirmed = false;
-
     @OneToOne
     @JoinColumn(name = "id_of_order")
     private Order order;

@@ -1,14 +1,13 @@
 package com.example.carservice.dto.order;
 
-import com.example.carservice.dto.serviceType.ServiceTypeDTO;
 import com.example.carservice.entities.Order;
+import com.example.carservice.entities.ServiceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -21,7 +20,7 @@ public class OrderDTO {
     private LocalTime timeEnd;
     private Long userId;
     private Long boxId;
-    private ServiceTypeDTO serviceTypeDTO;
+    private ServiceType serviceType;
     private String orderStatus;
 
     public static OrderDTO toDTO(Order order) {
@@ -37,9 +36,8 @@ public class OrderDTO {
         if (order.getBox() != null) {
             orderDTO.setBoxId(order.getBox().getId());
         }
-        if (order.getServiceType() != null) {
-            orderDTO.setServiceTypeDTO(ServiceTypeDTO.toDTO(order.getServiceType()));
-        }
+        orderDTO.setServiceType(order.getServiceType());
+
         if (order.getOrderStatus() != null) {
             orderDTO.setOrderStatus(order.getOrderStatus().getStatusName());
         }

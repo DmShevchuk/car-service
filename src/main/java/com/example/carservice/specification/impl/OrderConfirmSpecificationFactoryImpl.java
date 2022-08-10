@@ -13,11 +13,6 @@ import java.time.LocalDateTime;
 public class OrderConfirmSpecificationFactoryImpl implements OrderConfirmSpecificationFactory {
     @Override
     public Specification<Confirmation> createSpecificationForOrderConfirm(LocalDateTime currentTimestamp) {
-        return (root, query, cb) -> {
-            Predicate predicate = cb.conjunction();
-            predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get(Confirmation_.expireAt), currentTimestamp));
-            predicate = cb.and(predicate, cb.equal(root.get(Confirmation_.confirmed), false));
-            return predicate;
-        };
+        return (root, query, cb) -> cb.lessThan(root.get(Confirmation_.expireAt), currentTimestamp);
     }
 }

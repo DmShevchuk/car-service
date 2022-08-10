@@ -1,6 +1,7 @@
 package com.example.carservice.rest;
 
 import com.example.carservice.dto.order.OrderDTO;
+import com.example.carservice.dto.order.OrderPatchDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Order;
 import com.example.carservice.services.OrderService;
@@ -22,10 +23,11 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final ModelMapper modelMapper;
+
     private final OrderService orderService;
     private final ConfirmationFactory confirmationFactory;
     private final OrderFactory orderFactory;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
@@ -57,15 +59,15 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO update(@PathVariable Long id,
                            @Valid @RequestBody OrderSaveDTO orderSaveDTO) {
-        Order order = modelMapper.map(orderSaveDTO, Order.class);
-        return OrderDTO.toDTO(orderService.update(id, order));
+        return OrderDTO.toDTO(orderService.update(id, orderSaveDTO));
     }
 
 
     @PatchMapping("/{id}/statuses")
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO changeStatus(@PathVariable Long id,
-                           @RequestParam String newStatus) {
+                                 @Valid @RequestBody OrderPatchDTO orderPatchDTO) {
+        String newStatus = orderPatchDTO.getOrderStatus().toString();
         return OrderDTO.toDTO(orderService.changeStatus(id, newStatus));
     }
 

@@ -23,12 +23,12 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class OrderFactory {
+
     private final BoxService boxService;
     private final UserService userService;
     private final ServiceTypeService serviceTypeService;
     private final OrderStatusService orderStatusService;
-    @Value("${time.defaultZoneId}")
-    private String zoneId;
+
 
     public Order buildOrder(OrderSaveDTO orderDTO){
         Order order = new Order();

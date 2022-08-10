@@ -27,8 +27,9 @@ public class BoxController {
     @ResponseStatus(HttpStatus.OK)
     public BoxDTO add(@Valid @RequestBody BoxSaveDTO boxSaveDTO){
         Box box = modelMapper.map(boxSaveDTO, Box.class);
-        return BoxDTO.toDTO(boxService.add(box));
+        return modelMapper.map(boxService.add(box), BoxDTO.class);
     }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,23 +42,6 @@ public class BoxController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BoxDTO getBoxById(@PathVariable Long id){
-        return BoxDTO.toDTO(boxService.getBoxById(id));
-    }
-
-
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public BoxDTO update(@PathVariable Long id,
-                         @Valid @RequestBody BoxSaveDTO boxSaveDTO){
-        Box box = modelMapper.map(boxSaveDTO, Box.class);
-        return BoxDTO.toDTO(boxService.update(id, box));
-    }
-
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String delete(@PathVariable Long id){
-        boxService.remove(id);
-        return String.format("Box with id=%d was deleted successfully!", id);
+        return modelMapper.map(boxService.getBoxById(id), BoxDTO.class);
     }
 }

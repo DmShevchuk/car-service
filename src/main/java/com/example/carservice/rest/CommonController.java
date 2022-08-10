@@ -24,13 +24,12 @@ public class CommonController {
     private final BoxService boxService;
     private final ModelMapper modelMapper;
 
-
     @GetMapping("/income")
     @ResponseStatus(HttpStatus.OK)
     public String getIncome(@RequestParam(required = false) LocalTime timeFrom,
                             @RequestParam(required = false) LocalTime timeUntil,
                             @RequestParam(required = false) LocalDate dateFrom,
-                            @RequestParam(required = false) LocalDate dateUntil){
+                            @RequestParam(required = false) LocalDate dateUntil) {
         Long income = orderService.getIncome(
                 timeFrom,
                 timeUntil,
@@ -43,11 +42,11 @@ public class CommonController {
     @GetMapping("/orders")
     @ResponseStatus(HttpStatus.OK)
     public Page<OrderDTO> getOrders(@RequestParam(required = false) Long boxId,
-                                 @RequestParam(required = false) LocalTime timeFrom,
-                                 @RequestParam(required = false) LocalTime timeUntil,
-                                 @RequestParam(required = false) LocalDate dateFrom,
-                                 @RequestParam(required = false) LocalDate dateUntil,
-                                 @PageableDefault Pageable pageable) {
+                                    @RequestParam(required = false) LocalTime timeFrom,
+                                    @RequestParam(required = false) LocalTime timeUntil,
+                                    @RequestParam(required = false) LocalDate dateFrom,
+                                    @RequestParam(required = false) LocalDate dateUntil,
+                                    @PageableDefault Pageable pageable) {
         Box box = null;
         if (boxId != null) {
             box = boxService.getBoxById(boxId);

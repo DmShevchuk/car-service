@@ -17,7 +17,6 @@ import java.time.ZoneId;
 @Service
 @RequiredArgsConstructor
 public class ConfirmationService {
-    private final OrderService orderService;
     private final ConfirmationRepo confirmationRepo;
 
     @Value("${time.defaultZoneId}")
@@ -29,7 +28,7 @@ public class ConfirmationService {
     }
 
 
-    public Order confirmOrder(String token){
+    public Long confirmOrder(String token){
         Confirmation confirmation = confirmationRepo
                 .getConfirmationByToken(token)
                 .orElseThrow(() -> new ConfirmationNotFoundException(token));
@@ -39,13 +38,12 @@ public class ConfirmationService {
         if (currentDateTime.compareTo(confirmationExpireAt) >= 0){
             throw new ConfirmationTokenExpireException(token);
         }
-        confirmation.setConfirmed(true);
-        updateConfirmation(confirmation);
-        return orderService.changeStatus(confirmation.getOrder().getId(), OrderStatusEnum.CONFIRMED.toString());
+        delete(confirmation);
+        return confirmation.getOrder().getId();
     }
 
     @Transactional
-    public void updateConfirmation(Confirmation confirmation){
-        confirmationRepo.save(confirmation);
+    public void delete(Confirmation confirmation){
+        confirmationRepo.delete(confirmation);
     }
 }
