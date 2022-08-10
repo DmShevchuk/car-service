@@ -39,14 +39,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(#id)")
     public UserDTO getUserById(@PathVariable Long id){
         return modelMapper.map(userService.getUserById(id), UserDTO.class);
     }
 
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(#id)")
     public Page<OrderDTO> getAllUserOrders(@PathVariable Long id,
                                            @RequestParam("orderStatus") OrderStatusEnum orderStatus,
                                            @PageableDefault Pageable pageable){
@@ -58,7 +58,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(#id)")
     public UserDTO updateUserById(@PathVariable Long id,
                                   @Valid @RequestBody UserSaveDTO userSaveDTO){
 

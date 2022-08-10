@@ -48,7 +48,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || (hasRole('OPERATOR') && @accessValidator.canGetInfo(authentication, #id))")
+    @PreAuthorize("hasRole('ADMIN') || (hasRole('OPERATOR') && @accessValidator.canGetInfo(#id))")
     public EmployeeDTO getEmployeeById(@PathVariable Long id){
         return EmployeeDTO.toDTO(employeeService.getEmployeeById(id));
     }
@@ -56,7 +56,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}/box")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || (hasRole('OPERATOR') && @accessValidator.canGetInfo(authentication, #id))")
+    @PreAuthorize("hasRole('ADMIN') || (hasRole('OPERATOR') && @accessValidator.canGetInfo(#id))")
     public BoxDTO getEmployeeBox(@PathVariable Long id){
         return modelMapper.map(employeeService.getEmployeeBox(id), BoxDTO.class);
     }
@@ -64,7 +64,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}/discount")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || (hasRole('OPERATOR') && @accessValidator.canGetInfo(authentication, #id))")
+    @PreAuthorize("hasRole('ADMIN') || (hasRole('OPERATOR') && @accessValidator.canGetInfo(#id))")
     public DiscountDTO getEmployeeDiscount(@PathVariable Long id){
         return modelMapper.map(employeeService.getEmployeeDiscount(id), DiscountDTO.class);
     }

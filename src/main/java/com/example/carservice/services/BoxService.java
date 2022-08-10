@@ -51,6 +51,10 @@ public class BoxService {
             throw new RuntimeException("Unable to update box with orders!");
         }
         box.setId(boxId);
+        if (box.getTwentyFourHour()) {
+            box.setStartWorkTime(LocalTime.of(0, 0));
+            box.setEndWorkTime(LocalTime.of(0, 0));
+        }
         return boxRepo.save(box);
     }
 

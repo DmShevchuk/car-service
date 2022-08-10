@@ -12,7 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
+import javax.validation.constraints.NotNull;
+
 
 @Component
 @RequiredArgsConstructor
@@ -21,16 +22,16 @@ public class AccessValidator {
     private final OrderService orderService;
     private final BoxService boxService;
 
-    public boolean canGetInfo(Principal principal, Long employeeId) {
-        User user = userRepo.findUserByEmail(principal.getName())
+    public boolean canGetInfo(@NotNull Long employeeId) {
+        User user = userRepo.findUserByEmail(getPrincipalName())
                 .orElseThrow(() -> new RuntimeException("Unable to find user!"));
         return user.getEmployee()
                 .getId()
                 .equals(employeeId);
     }
 
-    public boolean canChangeOrder(Principal principal, Long orderId) {
-        User user = userRepo.findUserByEmail(principal.getName())
+    public boolean canChangeOrder(@NotNull Long orderId) {
+        User user = userRepo.findUserByEmail(getPrincipalName())
                 .orElseThrow(() -> new RuntimeException("Unable to find user!"));
 
         Order order = orderService.getOrderById(orderId);
@@ -44,10 +45,8 @@ public class AccessValidator {
 
     }
 
-    public boolean operatorHasAccessToBox(Long boxId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        User user = userRepo.findUserByEmail(currentPrincipalName)
+    public boolean operatorHasAccessToBox(@NotNull Long boxId) {
+        User user = userRepo.findUserByEmail(getPrincipalName())
                 .orElseThrow(() -> new RuntimeException("Unable to find user!"));
         if (Role.ROLE_OPERATOR.equals(user.getRole())){
             Box box = boxService.getBoxById(boxId);
@@ -56,9 +55,14 @@ public class AccessValidator {
         return true;
     }
 
-    public boolean canWorkWithUser(Principal principal, Long userId) {
-        User user = userRepo.findUserByEmail(principal.getName())
+    public boolean canWorkWithUser(@NotNull Long userId) {
+        User user = userRepo.findUserByEmail(getPrincipalName())
                 .orElseThrow(() -> new RuntimeException("Unable to find user!"));
         return userId.equals(user.getId());
+    }
+
+    private String getPrincipalName(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }

@@ -4,6 +4,7 @@ import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.dto.order.OrderPatchDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Order;
+import com.example.carservice.security.AccessValidator;
 import com.example.carservice.services.OrderService;
 import com.example.carservice.services.factories.ConfirmationFactory;
 import com.example.carservice.services.factories.OrderFactory;
@@ -28,6 +29,7 @@ public class OrderController {
     private final OrderService orderService;
     private final ConfirmationFactory confirmationFactory;
     private final OrderFactory orderFactory;
+    private final AccessValidator accessValidator;
 
 
     @PostMapping
@@ -53,7 +55,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO getOrderById(@PathVariable Long id) {
         return OrderDTO.toDTO(orderService.getOrderById(id));
     }
@@ -61,7 +63,7 @@ public class OrderController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO update(@PathVariable Long id,
                            @Valid @RequestBody OrderSaveDTO orderSaveDTO) {
         return OrderDTO.toDTO(orderService.update(id, orderSaveDTO));
@@ -69,7 +71,7 @@ public class OrderController {
 
     @PatchMapping("/{id}/check-in")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO clientCheckIn(@PathVariable Long id) {
         return OrderDTO.toDTO(orderService.clientCheckIn(id));
     }
@@ -77,7 +79,7 @@ public class OrderController {
 
     @PatchMapping("/{id}/statuses")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO changeStatus(@PathVariable Long id,
                                  @Valid @RequestBody OrderPatchDTO orderPatchDTO) {
         String newStatus = orderPatchDTO.getOrderStatus().toString();
@@ -87,7 +89,7 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public String delete(@PathVariable Long id) {
         orderService.remove(id);
         return String.format("Order with id=%d was deleted successfully!", id);

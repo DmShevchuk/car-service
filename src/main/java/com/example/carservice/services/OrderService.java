@@ -129,4 +129,12 @@ public class OrderService {
     public Page<Order> getAllByUserAndStatus(User user, OrderStatusEnum orderStatus, Pageable pageable) {
         return orderRepo.findAll(specificationBuilder.getUserOrders(user, orderStatus), pageable);
     }
+
+    @Transactional
+    public Order confirmOrder(Long id) {
+        Order order = getOrderById(id);
+        order.setOrderStatus(orderStatusService.getOrderStatusByName(OrderStatusEnum.CONFIRMED.toString()));
+        return orderRepo.save(order);
+    }
+
 }

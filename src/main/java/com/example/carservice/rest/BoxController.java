@@ -66,7 +66,7 @@ public class BoxController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
-    public BoxDTO getBoxById(@PathVariable Long id) {
+    public BoxDTO getBoxById(@PathVariable Long id){
         return modelMapper.map(boxService.getBoxById(id), BoxDTO.class);
     }
 

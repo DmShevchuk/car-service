@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionController {
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleException(Exception e) {
-        return new ApiError(e.getClass().getName(), e.getMessage());
-    }
+ //   @ExceptionHandler(Exception.class)
+  //  @ResponseStatus(HttpStatus.BAD_REQUEST)
+   // public ApiError handleException(Exception e) {
+  //      return new ApiError(e.getClass().getName(), e.getMessage());
+  //  }
 }

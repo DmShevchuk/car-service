@@ -16,11 +16,11 @@ public class ConfirmationController {
     private final OrderService orderService;
     private final ConfirmationService confirmationService;
 
-    @GetMapping("/{token}")
+    @PostMapping("/{token}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDTO confirmToken(@PathVariable String token){
         Long orderId = confirmationService.confirmOrder(token);
-        Order confirmedOrder = orderService.changeStatus(orderId, OrderStatusEnum.CONFIRMED.toString());
+        Order confirmedOrder = orderService.confirmOrder(orderId);
         return OrderDTO.toDTO(confirmedOrder);
     }
 }
