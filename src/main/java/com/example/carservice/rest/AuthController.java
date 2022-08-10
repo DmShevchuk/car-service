@@ -1,11 +1,12 @@
 package com.example.carservice.rest;
 
+import com.example.carservice.dto.jwt.AccessTokenResponseDTO;
+import com.example.carservice.dto.jwt.AuthRequest;
+import com.example.carservice.dto.jwt.JwtResponseDTO;
+import com.example.carservice.dto.jwt.RefreshRequestDTO;
 import com.example.carservice.dto.user.UserDTO;
 import com.example.carservice.dto.user.UserSaveDTO;
 import com.example.carservice.entities.User;
-import com.example.carservice.security.JwtRequest;
-import com.example.carservice.security.JwtResponse;
-import com.example.carservice.security.RefreshJwtRequest;
 import com.example.carservice.services.AuthService;
 import com.example.carservice.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class AuthController {
     private final ModelMapper modelMapper;
     private final AuthService authService;
 
-    @PostMapping("/registration")
+    @PostMapping("/reg")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO registration(@Valid @RequestBody UserSaveDTO userSaveDTO){
         User user = modelMapper.map(userSaveDTO, User.class);
@@ -34,18 +35,18 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public JwtResponse login(@RequestBody JwtRequest authRequest) throws AuthenticationException {
+    public JwtResponseDTO login(@Valid @RequestBody AuthRequest authRequest) {
         return authService.login(authRequest);
     }
 
     @PostMapping("/token")
     @ResponseStatus(HttpStatus.OK)
-    public JwtResponse getNewAccessToken(@RequestBody RefreshJwtRequest request) throws AuthException {
-        return authService.getAccessToken(request.getRefreshToken());
+    public AccessTokenResponseDTO getNewAccessToken(@Valid @RequestBody RefreshRequestDTO request){
+        return authService.getNewAccessToken(request.getRefreshToken());
     }
 
     @PostMapping("/refresh")
-    public JwtResponse getNewRefreshToken(@RequestBody RefreshJwtRequest request) throws AuthException {
-        return authService.refresh(request.getRefreshToken());
+    public JwtResponseDTO getNewRefreshToken(@Valid @RequestBody RefreshRequestDTO request){
+        return authService.getNewRefreshToken(request.getRefreshToken());
     }
 }

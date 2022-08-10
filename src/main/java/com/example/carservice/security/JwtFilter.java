@@ -2,6 +2,7 @@ package com.example.carservice.security;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,25 +22,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final JwtProvider jwtProvider;
-
     @Value("${jwt.authHeader}")
     private String authHeader;
-
     @Value("${jwt.bearerHeader}")
     private String bearerHeader;
-
+    private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
-        System.out.println(token);
-        if (token != null && jwtProvider.validateAccessToken(token)) {
+        if (token != null && jwtProvider.isAccessTokenValid(token)) {
             Claims claims = jwtProvider.getAccessClaims(token);
             Set<SimpleGrantedAuthority> authorities = getAuthorities(claims);
             String username = claims.getSubject();
@@ -52,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
-        }
+    }
 
 
     private String getTokenFromRequest(HttpServletRequest request) {
@@ -62,7 +60,6 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
 
     private Set<SimpleGrantedAuthority> getAuthorities(Claims claims) {
         var roles = (List<Map<String, String>>) claims.get("roles");

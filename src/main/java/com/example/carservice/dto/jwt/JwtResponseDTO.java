@@ -1,14 +1,13 @@
-package com.example.carservice.security;
+package com.example.carservice.dto.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class JwtResponse {
-
-    private final String type = "Bearer";
+public class JwtResponseDTO {
     private String accessToken;
     private String refreshToken;
-
 }

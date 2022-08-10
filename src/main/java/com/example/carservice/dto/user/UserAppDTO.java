@@ -1,33 +1,39 @@
-package com.example.carservice.security;
+package com.example.carservice.dto.user;
 
-import com.example.carservice.dto.user.AppUserDTO;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @Getter
-@RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails {
-    private final AppUserDTO user;
+@Setter
+public class UserAppDTO implements UserDetails {
+
+    private  String username;
+    private  String password;
+    private Collection<? extends GrantedAuthority> authorities;
+
+    public UserAppDTO(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return this.username;
     }
 
     @Override

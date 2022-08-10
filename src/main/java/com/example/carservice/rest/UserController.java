@@ -56,6 +56,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUserById(@PathVariable Long id,
                                   @Valid @RequestBody UserSaveDTO userSaveDTO){
+
         User user = modelMapper.map(userSaveDTO, User.class);
         return modelMapper.map(userService.update(id, user), UserDTO.class);
     }

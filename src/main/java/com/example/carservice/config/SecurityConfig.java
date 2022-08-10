@@ -3,44 +3,42 @@ package com.example.carservice.config;
 import com.example.carservice.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.authentication.AuthenticationManager;
 
+
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http
                 .csrf().disable()
+                .httpBasic().disable()
+                .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/v1/auth/*").anonymous()
+                .antMatchers("/api/v1/auth/reg").anonymous()
+                .antMatchers("/api/v1/auth/login", "/api/v1/auth/token").permitAll()
+//                .antMatchers("/api/v1/auth/refresh").authenticated()
+//                .antMatchers("/api/v1/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin().defaultSuccessUrl("/api/v1/orders").
-                and()
-                .httpBasic(Customizer.withDefaults())
-                .logout().logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Override
@@ -49,14 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
     @Bean
-    protected PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-
 }
