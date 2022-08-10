@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,14 +58,23 @@ public class OrderController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
     public OrderDTO update(@PathVariable Long id,
                            @Valid @RequestBody OrderSaveDTO orderSaveDTO) {
         return OrderDTO.toDTO(orderService.update(id, orderSaveDTO));
     }
 
+    @PatchMapping("/{id}/check-in")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
+    public OrderDTO clientCheckIn(@PathVariable Long id) {
+        return OrderDTO.toDTO(orderService.clientCheckIn(id));
+    }
+
 
     @PatchMapping("/{id}/statuses")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
     public OrderDTO changeStatus(@PathVariable Long id,
                                  @Valid @RequestBody OrderPatchDTO orderPatchDTO) {
         String newStatus = orderPatchDTO.getOrderStatus().toString();

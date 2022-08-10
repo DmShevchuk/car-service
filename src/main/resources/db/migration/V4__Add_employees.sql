@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS employees
     id_of_box      INTEGER,
     CONSTRAINT fk_box
         FOREIGN KEY (id_of_box)
-            REFERENCES boxes (box_id),
+            REFERENCES boxes (box_id)
+                ON DELETE CASCADE,
 
     id_of_discount INTEGER,
     CONSTRAINT fk_discount

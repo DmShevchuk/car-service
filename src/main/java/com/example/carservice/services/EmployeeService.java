@@ -1,13 +1,17 @@
 package com.example.carservice.services;
 
 import com.example.carservice.dto.employee.EmployeeSaveDTO;
+import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Discount;
 import com.example.carservice.entities.Employee;
 import com.example.carservice.entities.User;
 import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.repos.DiscountRepo;
 import com.example.carservice.repos.EmployeeRepo;
 import com.example.carservice.security.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +45,11 @@ public class EmployeeService {
         return employeeRepo.save(employee);
     }
 
+    public Page<Employee> getAll(Pageable pageable){
+        return employeeRepo.findAll(pageable);
+    }
+
+
     public Employee getEmployeeById(Long id){
         return employeeRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Employee", id));
@@ -49,5 +58,21 @@ public class EmployeeService {
     @Transactional
     public void removeEmployee(Long id){
         employeeRepo.deleteById(id);
+    }
+
+    public Box getEmployeeBox(Long id) {
+        Employee employee = getEmployeeById(id);
+        if (employee.getBox() == null){
+            throw new RuntimeException("Unable to get box!");
+        }
+        return employee.getBox();
+    }
+
+    public Discount getEmployeeDiscount(Long id){
+        Employee employee = getEmployeeById(id);
+        if (employee.getDiscount() == null){
+            throw new RuntimeException("Unable to get discount!");
+        }
+        return employee.getDiscount();
     }
 }

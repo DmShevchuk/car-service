@@ -1,5 +1,6 @@
 package com.example.carservice.specification.impl;
 
+import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Order;
 import com.example.carservice.entities.Order_;
 import com.example.carservice.entities.User;
@@ -19,5 +20,9 @@ public class CommonSpecificationBuilder {
             predicate = cb.and(predicate, cb.equal(root.get(Order_.user), user));
             return cb.and(predicate, cb.equal(root.get(Order_.orderStatus.getName()), orderStatus));
         };
+    }
+
+    public Specification<Order> getBoxOrders(Box box) {
+        return (root, query, cb) -> cb.equal(root.get(Order_.box), box);
     }
 }
