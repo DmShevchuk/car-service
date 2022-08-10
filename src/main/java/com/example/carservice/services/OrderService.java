@@ -74,7 +74,7 @@ public class OrderService {
     public Order clientCheckIn(Long id) {
         Order order = getOrderById(id);
         if (!"CONFIRMED".equals(order.getOrderStatus().getStatusName())){
-            throw new RuntimeException("Something is wrong with the order: it may have been canceled or completed!");
+            throw new RuntimeException("Something is wrong with the order: it may have been canceled or finished!");
         }
 
         LocalDateTime orderStartTimestamp = LocalDateTime.of(order.getDateStart(), order.getTimeStart());

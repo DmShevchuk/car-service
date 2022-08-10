@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class ServiceTypeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public ServiceTypeDTO add(@Valid @RequestBody ServiceTypeSaveDTO serviceTypeSaveDTO){
         ServiceType serviceType = modelMapper.map(serviceTypeSaveDTO, ServiceType.class);
         return modelMapper.map(serviceTypeService.add(serviceType), ServiceTypeDTO.class);
@@ -40,6 +42,7 @@ public class ServiceTypeController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public ServiceTypeDTO getServiceTypeById(@PathVariable Long id){
         return modelMapper.map(serviceTypeService.getServiceTypeById(id), ServiceTypeDTO.class);
     }

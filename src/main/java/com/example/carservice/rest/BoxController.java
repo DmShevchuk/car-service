@@ -28,6 +28,7 @@ public class BoxController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public BoxDTO add(@Valid @RequestBody BoxSaveDTO boxSaveDTO) {
         Box box = modelMapper.map(boxSaveDTO, Box.class);
         return modelMapper.map(boxService.add(box), BoxDTO.class);
@@ -36,6 +37,7 @@ public class BoxController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public BoxDTO update(@PathVariable Long id,
                          @Valid @RequestBody BoxSaveDTO boxSaveDTO) {
         Box box = modelMapper.map(boxSaveDTO, Box.class);
@@ -45,6 +47,7 @@ public class BoxController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<BoxDTO> getAll(@PageableDefault Pageable pageable) {
         Page<Box> boxes = boxService.getAll(pageable);
         return boxes.map(b -> modelMapper.map(b, BoxDTO.class));
@@ -52,6 +55,7 @@ public class BoxController {
 
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.operatorHasAccessToBox(#id)")
     public Page<OrderDTO> getOrdersByBox(@PathVariable Long id,
                                          @PageableDefault Pageable pageable) {
         Page<Order> orders = boxService.getOrdersByBox(id, pageable);
@@ -61,6 +65,7 @@ public class BoxController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public BoxDTO getBoxById(@PathVariable Long id) {
         return modelMapper.map(boxService.getBoxById(id), BoxDTO.class);
     }
@@ -68,6 +73,7 @@ public class BoxController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteBoxBy(@PathVariable Long id) {
         boxService.deleteBoxById(id);
         return "Box was deleted successfully!";

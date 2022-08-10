@@ -12,9 +12,6 @@ import com.example.carservice.entities.Box;
 import java.time.LocalTime;
 
 
-/**
- * Класс dto для объектов класса {@link Box}
- * */
 @Getter
 @Setter
 @NoArgsConstructor

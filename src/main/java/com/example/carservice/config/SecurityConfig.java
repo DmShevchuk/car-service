@@ -30,7 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/reg").anonymous()
-                .antMatchers("/api/v1/auth/login", "/api/v1/auth/token").permitAll()
+                .antMatchers(
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/token",
+                        "/api/v1/confirmation/*").permitAll()
 //                .antMatchers("/api/v1/auth/refresh").authenticated()
 //                .antMatchers("/api/v1/**").authenticated()
                 .anyRequest().authenticated()

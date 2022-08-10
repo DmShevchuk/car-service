@@ -44,7 +44,7 @@ public class AccessValidator {
 
     }
 
-    public boolean operatorHasAccess(Long boxId) {
+    public boolean operatorHasAccessToBox(Long boxId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         User user = userRepo.findUserByEmail(currentPrincipalName)
@@ -54,5 +54,11 @@ public class AccessValidator {
             return box.equals(user.getEmployee().getBox());
         }
         return true;
+    }
+
+    public boolean canWorkWithUser(Principal principal, Long userId) {
+        User user = userRepo.findUserByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Unable to find user!"));
+        return userId.equals(user.getId());
     }
 }

@@ -32,6 +32,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('OPERATOR') || hasRole('USER')")
     public OrderDTO add(@Valid @RequestBody OrderSaveDTO orderSaveDTO) throws ParseException {
         Order order = orderService.create(
                 orderFactory.buildOrder(orderSaveDTO)
@@ -43,6 +44,7 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<OrderDTO> getAll(@PageableDefault Pageable pageable) {
         Page<Order> orders = orderService.getAll(pageable);
         return orders.map(OrderDTO::toDTO);
@@ -51,6 +53,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
     public OrderDTO getOrderById(@PathVariable Long id) {
         return OrderDTO.toDTO(orderService.getOrderById(id));
     }
@@ -84,6 +87,7 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(principal, #id)")
     public String delete(@PathVariable Long id) {
         orderService.remove(id);
         return String.format("Order with id=%d was deleted successfully!", id);

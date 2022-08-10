@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<UserDTO> getAllUsers(@PageableDefault Pageable pageable){
         Page<User> users = userService.getAll(pageable);
         return users.map(u -> modelMapper.map(u, UserDTO.class));
@@ -37,12 +39,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(principal, #id)")
     public UserDTO getUserById(@PathVariable Long id){
         return modelMapper.map(userService.getUserById(id), UserDTO.class);
     }
 
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(principal, #id)")
     public Page<OrderDTO> getAllUserOrders(@PathVariable Long id,
                                            @RequestParam("orderStatus") OrderStatusEnum orderStatus,
                                            @PageableDefault Pageable pageable){
@@ -54,6 +58,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(principal, #id)")
     public UserDTO updateUserById(@PathVariable Long id,
                                   @Valid @RequestBody UserSaveDTO userSaveDTO){
 
@@ -64,6 +69,7 @@ public class UserController {
 
     @PatchMapping("/{id}/roles")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public UserDTO changeUserRole(@PathVariable Long id,
                                   @Valid @RequestBody UserPatchDTO userPatchDTO){
         return modelMapper.map(userService.changeRole(id, userPatchDTO.getNewRole()), UserDTO.class);
