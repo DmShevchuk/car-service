@@ -21,13 +21,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Контроллер для работы с операторами
+ * */
 @RestController
 @RequestMapping("/api/v1/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
     private final ModelMapper modelMapper;
     private final EmployeeService employeeService;
-    private final AccessValidator accessValidator;
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)

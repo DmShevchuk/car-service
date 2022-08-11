@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.entities;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

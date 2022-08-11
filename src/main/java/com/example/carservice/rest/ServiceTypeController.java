@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Контроллер для добавления услуг или их просмотра
+ * */
 @RestController
 @RequestMapping("/api/v1/service-types")
 @RequiredArgsConstructor

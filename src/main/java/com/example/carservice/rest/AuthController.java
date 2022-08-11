@@ -18,6 +18,9 @@ import javax.naming.AuthenticationException;
 import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
 
+/**
+ * Контроллер для выполнения авторизации пользователей в системе
+ * */
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.entities;
 
 public class OrderStatusAlreadyExistsException extends RuntimeException {
     public OrderStatusAlreadyExistsException(String name) {

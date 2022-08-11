@@ -1,7 +1,7 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.Box;
-import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.BoxRepo;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.specification.impl.CommonSpecificationBuilder;
@@ -39,7 +39,7 @@ class BoxServiceTest {
 
     @Test
     @DisplayName("Add box to car-service")
-    void addBox_WithCorrectData() {
+    void add_WithCorrectData() {
         Mockito
                 .doReturn(firstBox)
                 .when(boxRepo)

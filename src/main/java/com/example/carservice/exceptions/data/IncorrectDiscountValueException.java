@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.data;
 
 public class IncorrectDiscountValueException extends RuntimeException {
     public IncorrectDiscountValueException() {

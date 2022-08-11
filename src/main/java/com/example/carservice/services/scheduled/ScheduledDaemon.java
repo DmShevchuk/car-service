@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+
+/**
+ * Сервис для обновления статусов заказа
+ * */
 @Slf4j
 @Component
 @EnableAsync
@@ -26,6 +30,11 @@ public class ScheduledDaemon {
     private final ConfirmationRepo confirmationRepo;
     private final OrderConfirmSpecificationFactory orderConfirmSpecificationFactory;
 
+
+
+    /**
+     * Обновление и удаление подтверждений каждую минуту
+     * */
     @Async
     @Transactional
     @Scheduled(cron = "0 * * ? * *")
@@ -42,6 +51,10 @@ public class ScheduledDaemon {
     }
 
 
+
+    /**
+     * Обновление статуса заказов каждую минут
+     * */
     @Async
     @Transactional
     @Scheduled(cron = "0 * * ? * *")

@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ServiceTypeRepo extends JpaRepository<ServiceType, Long>, JpaSpecificationExecutor<ServiceType> {
     boolean existsByServiceName(String name);
-
     Optional<ServiceType> findServiceTypeByServiceName(String name);
 }

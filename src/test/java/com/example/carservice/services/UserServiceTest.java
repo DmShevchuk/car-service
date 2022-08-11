@@ -1,7 +1,7 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.User;
-import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.UserRepo;
 import com.example.carservice.security.Role;
 import org.junit.jupiter.api.Assertions;
@@ -56,7 +56,11 @@ public class UserServiceTest {
                 .save(user);
 
         String passwordEncode = "qwerty12345";
-        Mockito.when(encoder.encode(password)).thenReturn(passwordEncode);
+        Mockito
+                .doReturn(passwordEncode)
+                .when(encoder)
+                .encode(password);
+
         Long userId = userService.registration(user).getId();
 
         Mockito.verify(userRepo, Mockito.times(1)).save(user);

@@ -6,7 +6,7 @@ import com.example.carservice.entities.Order;
 import com.example.carservice.entities.OrderStatus;
 import com.example.carservice.entities.User;
 import com.example.carservice.entities.enums.OrderStatusEnum;
-import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.services.factories.ConfirmationFactory;
 import com.example.carservice.services.factories.OrderFactory;
@@ -20,12 +20,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 
+
+/**
+ * Сервис для работы с заказами
+ * */
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -40,11 +43,20 @@ public class OrderService {
     @Value("${time.defaultZoneId}")
     private String zoneId;
 
+
+    /**
+     * Создание нового закза
+     * */
     @Transactional
     public Order create(Order order) {
         return orderRepo.save(order);
     }
 
+
+
+    /**
+     * Изменение статуса заказа
+     * */
     @Transactional
     public Order changeStatus(Long id, String statusName) {
         if (!"CANCELED".equals(statusName) && !"FINISHED".equals(statusName)){
@@ -55,6 +67,11 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
+
+
+    /**
+     * Обновление заказа
+     * */
     @Transactional
     public Order update(Long id, OrderSaveDTO orderSaveDTO) {
         Order order = getOrderById(id);
@@ -63,10 +80,7 @@ public class OrderService {
         try {
             Order newOrder = orderFactory.buildOrder(orderSaveDTO);
             confirmationFactory.createConfirmation(newOrder);
-            System.out.println("1-----------1");
-            System.out.println(newOrder.getId());
             newOrder.setId(id);
-            System.out.println(newOrder.getId());
             return orderRepo.save(newOrder);
         }catch (Exception e){
             changeStatus(id, previousStatusName);
@@ -74,6 +88,10 @@ public class OrderService {
         }
     }
 
+
+    /**
+     * Изменение статуса заказа на CLIENT_CHECKED_IN
+     * */
     @Transactional
     public Order clientCheckIn(Long id) {
         Order order = getOrderById(id);
@@ -94,10 +112,20 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
+
+
+    /**
+     * Получение всех заказов
+     * */
     public Page<Order> getAll(Pageable pageable) {
         return orderRepo.findAll(pageable);
     }
 
+
+
+    /**
+     * Мягкое удаление заказа
+     * */
     @Transactional
     public void remove(Long id) {
         Order order = getOrderById(id);
@@ -106,6 +134,9 @@ public class OrderService {
     }
 
 
+    /**
+     * Получение информации о доходе за указанный период
+     * */
     public Long getIncome(LocalTime timeFrom,
                           LocalTime timeUntil,
                           LocalDate dateFrom,
@@ -114,12 +145,18 @@ public class OrderService {
     }
 
 
+    /**
+     * Получение заказа по id
+     * */
     public Order getOrderById(Long id) {
         return orderRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order", id));
     }
 
 
+    /**
+     * Получение заказа по и/или боксу и/или дате и/или времени
+     * */
     public Page<Order> getOrdersByParameter(Box box,
                                             LocalTime timeFrom,
                                             LocalTime timeUntil,
@@ -130,11 +167,19 @@ public class OrderService {
                 .getSpecificationForOrders(box, timeFrom, timeUntil, dateFrom, dateUntil), pageable);
     }
 
+
+    /**
+     * Получение всех заказов пользователя статусу
+     * */
     public Page<Order> getAllByUserAndStatus(User user, OrderStatusEnum orderStatus, Pageable pageable) {
         OrderStatus orderSt = orderStatusService.getOrderStatusByName(orderStatus.toString());
         return orderRepo.findAll(specificationBuilder.getUserOrders(user, orderSt), pageable);
     }
 
+
+    /**
+     * Подтверждение заказа
+     * */
     @Transactional
     public Order confirmOrder(Long id) {
         Order order = getOrderById(id);

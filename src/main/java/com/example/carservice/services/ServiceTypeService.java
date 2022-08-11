@@ -1,10 +1,10 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.ServiceType;
-import com.example.carservice.exceptions.EntityNotFoundException;
-import com.example.carservice.exceptions.IncorrectServiceTypeDuration;
-import com.example.carservice.exceptions.ServiceTypeAlreadyExistsException;
-import com.example.carservice.exceptions.ServiceTypeNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
+import com.example.carservice.exceptions.data.IncorrectServiceTypeDuration;
+import com.example.carservice.exceptions.entities.ServiceTypeAlreadyExistsException;
+import com.example.carservice.exceptions.entities.ServiceTypeNotFoundException;
 import com.example.carservice.repos.ServiceTypeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

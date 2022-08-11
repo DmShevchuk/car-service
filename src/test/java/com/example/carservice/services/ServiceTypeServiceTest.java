@@ -1,7 +1,7 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.ServiceType;
-import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.ServiceTypeRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -50,13 +50,11 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Create service with correct data")
-    void addService_WithCorrectData() {
+    void save_WithCorrectData() {
         Mockito
                 .doReturn(serviceType)
                 .when(serviceTypeRepo)
                 .save(serviceType);
-
-        Mockito.when(serviceTypeRepo.save(serviceType)).thenReturn(serviceType);
         Long serviceId = serviceTypeService.add(serviceType).getId();
         Mockito.verify(serviceTypeRepo, Mockito.times(1)).save(serviceType);
         Assertions.assertEquals(serviceType.getId(), serviceId);
@@ -65,25 +63,25 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Find service types with correct return data")
-    void getServiceTypes_WithCorrectReturnData() {
+    void findById_WithCorrectReturnData() {
         Mockito
                 .doReturn(Optional.ofNullable(serviceType))
                 .when(serviceTypeRepo)
                 .findById(id);
         ServiceType createdServiceType = serviceTypeRepo.findById(id).get();
         Mockito.verify(serviceTypeRepo, Mockito.times(1)).findById(id);
+        assert serviceType != null;
         Assertions.assertEquals(createdServiceType.getId(), serviceType.getId());
     }
 
 
     @Test
     @DisplayName("Find all services in page")
-    void getAllServicesInPage() {
+    void findAll_Test() {
         Mockito
                 .doReturn(page)
                 .when(serviceTypeRepo)
                 .findAll(pageable);
-        Mockito.when(serviceTypeRepo.findAll(pageable)).thenReturn(page);
         Page<ServiceType> serviceTypes = serviceTypeService.getAll(pageable);
         Mockito.verify(serviceTypeRepo, Mockito.times(1)).findAll(pageable);
         Assertions.assertEquals(page, serviceTypes);
@@ -91,7 +89,7 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Find service types with EntityNotFoundException")
-    void getServiceTypes_WithNotFoundReturnValue() {
+    void findById_WithNotFoundReturnValue() {
         Mockito
                 .doReturn(Optional.empty())
                 .when(serviceTypeRepo)
