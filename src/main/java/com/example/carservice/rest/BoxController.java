@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Контроллер для работы с боксами
+ * */
 @RestController
 @RequestMapping("/api/v1/boxes")
 @RequiredArgsConstructor

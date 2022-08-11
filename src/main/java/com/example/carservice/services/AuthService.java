@@ -4,7 +4,7 @@ import com.example.carservice.dto.jwt.AccessTokenResponseDTO;
 import com.example.carservice.dto.jwt.AuthRequest;
 import com.example.carservice.dto.jwt.JwtResponseDTO;
 import com.example.carservice.dto.user.UserAppDTO;
-import com.example.carservice.exceptions.AuthenticationException;
+import com.example.carservice.exceptions.auth.AuthenticationException;
 import com.example.carservice.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Сервис аутентификации пользователя
+ * */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -26,6 +29,10 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
 
+
+    /**
+     * Авторизация пользователя
+     * */
     public JwtResponseDTO login(AuthRequest authRequest) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authRequest.getUsername(),
                 authRequest.getPassword());
@@ -41,6 +48,11 @@ public class AuthService {
         return new JwtResponseDTO(accessToken, refreshToken);
     }
 
+
+
+    /**
+     * Получение нового aceess-токена, который включает email и роль пользователя
+     * */
     public AccessTokenResponseDTO getNewAccessToken(String refreshToken) throws AuthenticationException {
         if (jwtProvider.isRefreshTokenValid(refreshToken)) {
             Claims claims = jwtProvider.getRefreshTokenClaims(refreshToken);
@@ -55,6 +67,11 @@ public class AuthService {
         throw new AuthenticationException("Refresh JWT is invalid!");
     }
 
+
+
+    /**
+     * Получение нового refresh-токена
+     * */
     public JwtResponseDTO getNewRefreshToken(String refreshToken) throws AuthenticationException {
         if (jwtProvider.isRefreshTokenValid(refreshToken)) {
             Claims claims = jwtProvider.getRefreshTokenClaims(refreshToken);

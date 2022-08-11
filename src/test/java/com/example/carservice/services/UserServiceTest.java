@@ -1,7 +1,7 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.User;
-import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.UserRepo;
 import com.example.carservice.security.Role;
 import org.junit.jupiter.api.Assertions;

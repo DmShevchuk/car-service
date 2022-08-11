@@ -20,6 +20,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * Класс для создания нового заказа
+ * */
 @Service
 @RequiredArgsConstructor
 public class OrderFactory {
@@ -29,7 +32,10 @@ public class OrderFactory {
     private final ServiceTypeService serviceTypeService;
     private final OrderStatusService orderStatusService;
 
-
+    /**
+     * Установка всех полей заказа и вызов метода {@link BoxService#getBestBoxForOrder(LocalTime, LocalDate, LocalTime)}
+     *  для поиска лучшего бокса для заказа
+     * */
     public Order buildOrder(OrderSaveDTO orderDTO){
         Order order = new Order();
 
@@ -50,6 +56,10 @@ public class OrderFactory {
         return order;
     }
 
+
+    /**
+     * Если бокс был найден успешно, высчитывается время окончания заказа
+     * */
     private LocalDateTime countEndDateTime(LocalTime startTime, LocalDate startDate,
                                            LocalTime basicDuration, Float boxTimeFactor) {
         int minutesInHour = 60;

@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Контроллер для получения статистики админом или оператором
+ * */
 @RestController
 @RequestMapping("/api/v1/stats-info")
 @RequiredArgsConstructor

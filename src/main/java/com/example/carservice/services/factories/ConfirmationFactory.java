@@ -11,9 +11,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+/**
+ * Создание объектов класса {@link Confirmation} для подтверждения заказа
+ * */
 @Service
 @RequiredArgsConstructor
 public class ConfirmationFactory {
+
     private final ConfirmationService confirmationService;
 
     @Value("${time.defaultZoneId}")
@@ -21,6 +25,10 @@ public class ConfirmationFactory {
     @Value("${time.expirationPeriodInMinutes}")
     private Long expirationPeriod;
 
+
+    /**
+     * Создание токена подтверждения, которое становиться невалидным через 15 минут
+     * */
     public void createConfirmation(Order order){
         Confirmation confirmation = new Confirmation();
         confirmation.setToken(generateConfirmationToken());
@@ -29,13 +37,27 @@ public class ConfirmationFactory {
         confirmationService.create(confirmation);
     }
 
+
+    /**
+     * Генератор токена для подтверждения
+     * */
     private String generateConfirmationToken(){
         int tokenLength = 20;
         boolean useLetters = true;
         boolean useNumbers = true;
 
         String token = RandomStringUtils.random(tokenLength, useLetters, useNumbers);
-        System.out.println("localhost:8080/api/v1/confirmation/" + token);
+        sendTokenToConsole(token);
         return token;
+    }
+
+
+    /**
+     * Вывод ссылки на подтверждение заказа в консоль
+     * */
+    private void sendTokenToConsole(String token){
+        System.out.println("--------------------------------------------");
+        System.out.println("localhost:8080/api/v1/confirmation/" + token);
+        System.out.println("--------------------------------------------");
     }
 }

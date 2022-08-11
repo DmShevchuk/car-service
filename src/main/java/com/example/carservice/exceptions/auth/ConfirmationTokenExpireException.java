@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.auth;
 
 public class ConfirmationTokenExpireException extends RuntimeException{
     public ConfirmationTokenExpireException(String token) {

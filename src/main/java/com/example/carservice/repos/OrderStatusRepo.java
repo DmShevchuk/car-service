@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface OrderStatusRepo extends JpaRepository<OrderStatus, Long> {
     Optional<OrderStatus> findOrderStatusesByStatusName(String statusName);
-
-    boolean existsByStatusName(String statusName);
 }

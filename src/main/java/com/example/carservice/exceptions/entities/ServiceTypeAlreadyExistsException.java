@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.entities;
 
 public class ServiceTypeAlreadyExistsException extends RuntimeException {
     public ServiceTypeAlreadyExistsException(String name) {

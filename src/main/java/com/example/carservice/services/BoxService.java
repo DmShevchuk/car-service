@@ -2,9 +2,9 @@ package com.example.carservice.services;
 
 import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Order;
-import com.example.carservice.exceptions.BoxAlreadyExistsException;
-import com.example.carservice.exceptions.EntityNotFoundException;
-import com.example.carservice.exceptions.UnableToFindFreeBoxException;
+import com.example.carservice.exceptions.entities.BoxAlreadyExistsException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.UnableToFindFreeBoxException;
 import com.example.carservice.repos.BoxRepo;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.specification.impl.CommonSpecificationBuilder;
@@ -46,6 +46,9 @@ public class BoxService {
     }
 
 
+    /**
+     * Обновление бокса
+     * */
     public Box update(Long boxId, Box box){
         if (getBoxById(boxId).getOrders().size() != 0){
             throw new RuntimeException("Unable to update box with orders!");
@@ -88,6 +91,9 @@ public class BoxService {
     }
 
 
+    /**
+     * Удаление бокса, если в нем нет заказов
+     * */
     public void deleteBoxById(Long boxId){
         if (getBoxById(boxId).getOrders().size() != 0){
             throw new RuntimeException("Unable to delete box with orders!");
@@ -95,6 +101,10 @@ public class BoxService {
         boxRepo.deleteById(boxId);
     }
 
+
+    /**
+     * Получение бокса по id
+     * */
     public Page<Order> getOrdersByBox(Long id, Pageable pageable) {
         Box box = getBoxById(id);
         return orderRepo.findAll(specificationBuilder.getBoxOrders(box), pageable);

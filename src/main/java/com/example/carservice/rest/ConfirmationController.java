@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Контроллер для подтверждения брони
+ * */
 @RestController
 @RequestMapping("/api/v1/confirmation")
 @RequiredArgsConstructor

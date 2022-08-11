@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.entities;
 
 public class ServiceTypeNotFoundException extends RuntimeException{
     public ServiceTypeNotFoundException(String name) {

@@ -1,7 +1,7 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.ServiceType;
-import com.example.carservice.exceptions.EntityNotFoundException;
+import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.ServiceTypeRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

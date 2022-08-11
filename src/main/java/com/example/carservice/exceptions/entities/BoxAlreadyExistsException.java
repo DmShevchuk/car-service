@@ -1,4 +1,4 @@
-package com.example.carservice.exceptions;
+package com.example.carservice.exceptions.entities;
 
 public class BoxAlreadyExistsException extends RuntimeException {
     public BoxAlreadyExistsException(String name) {

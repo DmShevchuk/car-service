@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.ParseException;
 
+/**
+ * Контроллер для работы с заказами
+ * */
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor

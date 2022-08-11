@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * Контроллер для назначения скидок оператору
+ * */
 @RestController
 @RequestMapping("/api/v1/discounts")
 @RequiredArgsConstructor
