@@ -40,12 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin().defaultSuccessUrl("/swagger-ui/#").
-                and().
-                httpBasic(Customizer.withDefaults()).
-                logout().logoutUrl("/logout").
-                logoutSuccessUrl("/login");
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 
