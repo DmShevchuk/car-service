@@ -56,7 +56,11 @@ public class UserServiceTest {
                 .save(user);
 
         String passwordEncode = "qwerty12345";
-        Mockito.when(encoder.encode(password)).thenReturn(passwordEncode);
+        Mockito
+                .doReturn(passwordEncode)
+                .when(encoder)
+                .encode(password);
+
         Long userId = userService.registration(user).getId();
 
         Mockito.verify(userRepo, Mockito.times(1)).save(user);

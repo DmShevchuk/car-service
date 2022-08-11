@@ -69,7 +69,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("Create order with correct data")
-    void addOrder_WithCorrectData() {
+    void save_WithCorrectData() {
         Mockito
                 .doReturn(order)
                 .when(orderRepo)
@@ -82,7 +82,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("Find order with correct return data")
-    void getOrder_WithCorrectReturnData() {
+    void findById_WithCorrectReturnData() {
         Mockito
                 .doReturn(Optional.ofNullable(order))
                 .when(orderRepo)
@@ -96,7 +96,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("Find all orders in page")
-    void getAllOrdersInPage() {
+    void findAll_Test() {
         Mockito
                 .doReturn(page)
                 .when(orderRepo)
@@ -109,7 +109,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("Find orders with EntityNotFoundException")
-    void getOrders_WithNotFoundReturnValue() {
+    void findById_WithNotFoundReturnValue() {
         Mockito
                 .doReturn(Optional.empty())
                 .when(orderRepo)

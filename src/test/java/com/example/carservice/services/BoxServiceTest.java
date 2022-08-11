@@ -39,7 +39,7 @@ class BoxServiceTest {
 
     @Test
     @DisplayName("Add box to car-service")
-    void addBox_WithCorrectData() {
+    void add_WithCorrectData() {
         Mockito
                 .doReturn(firstBox)
                 .when(boxRepo)

@@ -14,8 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,8 +27,6 @@ public class DiscountServiceTest {
     private final Discount discount;
 
     private final Long discountId = 1L;
-    private final Float minDiscount = 2.0F;
-    private final Float maxDiscount = 10.0F;
 
     Set<Long> discountIds;
     Pageable pageable;
@@ -42,9 +38,6 @@ public class DiscountServiceTest {
 
         Float minDiscount = 2.0F;
         Float maxDiscount = 10.0F;
-
-        LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now();
 
         discount = new Discount();
         discount.setId(discountId);
@@ -59,7 +52,7 @@ public class DiscountServiceTest {
 
     @Test
     @DisplayName("Find discount with correct return data")
-    void getDiscount_WithCorrectReturnData() {
+    void findById_WithCorrectReturnData() {
         Mockito
                 .doReturn(Optional.ofNullable(discount))
                 .when(discountRepo)
@@ -72,7 +65,7 @@ public class DiscountServiceTest {
 
     @Test
     @DisplayName("Find all discounts in page")
-    void getAllDiscountInPage() {
+    void findAll_Test() {
         Mockito
                 .doReturn(page)
                 .when(discountRepo)
@@ -85,7 +78,7 @@ public class DiscountServiceTest {
 
     @Test
     @DisplayName("Find discount with EntityNotFoundException")
-    void getDiscount_WithNotFoundReturnValue() {
+    void findById_WithNotFoundReturnValue() {
         Mockito
                 .doReturn(Optional.empty())
                 .when(discountRepo)

@@ -50,7 +50,7 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Create service with correct data")
-    void addService_WithCorrectData() {
+    void save_WithCorrectData() {
         Mockito
                 .doReturn(serviceType)
                 .when(serviceTypeRepo)
@@ -63,7 +63,7 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Find service types with correct return data")
-    void getServiceTypes_WithCorrectReturnData() {
+    void findById_WithCorrectReturnData() {
         Mockito
                 .doReturn(Optional.ofNullable(serviceType))
                 .when(serviceTypeRepo)
@@ -77,7 +77,7 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Find all services in page")
-    void getAllServicesInPage() {
+    void findAll_Test() {
         Mockito
                 .doReturn(page)
                 .when(serviceTypeRepo)
@@ -89,7 +89,7 @@ public class ServiceTypeServiceTest {
 
     @Test
     @DisplayName("Find service types with EntityNotFoundException")
-    void getServiceTypes_WithNotFoundReturnValue() {
+    void findById_WithNotFoundReturnValue() {
         Mockito
                 .doReturn(Optional.empty())
                 .when(serviceTypeRepo)
