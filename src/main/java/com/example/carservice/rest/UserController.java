@@ -64,7 +64,6 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(#id)")
     public UserDTO updateUserById(@PathVariable Long id,
                                   @Valid @RequestBody UserSaveDTO userSaveDTO){
-
         User user = modelMapper.map(userSaveDTO, User.class);
         return modelMapper.map(userService.update(id, user), UserDTO.class);
     }

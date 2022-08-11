@@ -33,17 +33,16 @@ public class CommonController {
     @GetMapping("/income")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
-    public String getIncome(@RequestParam(required = false) LocalTime timeFrom,
+    public Long getIncome(@RequestParam(required = false) LocalTime timeFrom,
                             @RequestParam(required = false) LocalTime timeUntil,
                             @RequestParam(required = false) LocalDate dateFrom,
                             @RequestParam(required = false) LocalDate dateUntil) {
-        Long income = orderService.getIncome(
+        return orderService.getIncome(
                 timeFrom,
                 timeUntil,
                 dateFrom,
                 dateUntil
         );
-        return String.format("Доход за указанный период: %d рублей.", income);
     }
 
     @GetMapping("/orders")

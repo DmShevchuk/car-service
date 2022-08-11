@@ -3,7 +3,7 @@ package com.example.carservice.services;
 import com.example.carservice.dto.jwt.AccessTokenResponseDTO;
 import com.example.carservice.dto.jwt.AuthRequest;
 import com.example.carservice.dto.jwt.JwtResponseDTO;
-import com.example.carservice.dto.user.UserAppDTO;
+import com.example.carservice.security.UserAppDTO;
 import com.example.carservice.exceptions.auth.AuthenticationException;
 import com.example.carservice.security.JwtProvider;
 import io.jsonwebtoken.Claims;

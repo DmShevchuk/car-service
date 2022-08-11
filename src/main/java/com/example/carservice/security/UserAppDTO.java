@@ -1,4 +1,4 @@
-package com.example.carservice.dto.user;
+package com.example.carservice.security;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +11,8 @@ import java.util.Collection;
 @Setter
 public class UserAppDTO implements UserDetails {
 
-    private  String username;
-    private  String password;
+    private String username;
+    private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserAppDTO(String username, String password, Collection<? extends GrantedAuthority> authorities) {

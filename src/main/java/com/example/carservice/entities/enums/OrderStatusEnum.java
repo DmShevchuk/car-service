@@ -23,6 +23,7 @@ public enum OrderStatusEnum {
      * */
     CLIENT_CHECKED_IN,
 
+
     /**
      * Заказ выполняется
      * */

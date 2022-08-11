@@ -36,17 +36,20 @@ public class AuthController {
         return modelMapper.map(userService.registration(user), UserDTO.class);
     }
 
+
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public JwtResponseDTO login(@Valid @RequestBody AuthRequest authRequest) {
         return authService.login(authRequest);
     }
 
+
     @PostMapping("/token")
     @ResponseStatus(HttpStatus.OK)
     public AccessTokenResponseDTO getNewAccessToken(@Valid @RequestBody RefreshRequestDTO request){
         return authService.getNewAccessToken(request.getRefreshToken());
     }
+
 
     @PostMapping("/refresh")
     public JwtResponseDTO getNewRefreshToken(@Valid @RequestBody RefreshRequestDTO request){
