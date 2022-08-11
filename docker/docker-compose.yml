@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  postgres:
+    build: postgres
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+  spring-boot-containers:
+    build: ../
+    ports:
+      - "8080:8080"
+    links:
+      - postgres
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      JAVA_HEAP_SIZE_MB: 1024

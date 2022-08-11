@@ -2,9 +2,11 @@ package com.example.carservice.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,16 +24,18 @@ public class Box {
     private String name;
 
     @Column(name = "start_time")
-    private Time startWorkTime;
+    private LocalTime startWorkTime;
 
     @Column(name = "end_time")
-    private Time endWorkTime;
+    private LocalTime endWorkTime;
 
     @Column(name = "time_factor")
     private Float timeFactor;
 
+    @Column(name = "twenty_four_hour")
+    private Boolean twentyFourHour = false;
+
     @OneToMany(mappedBy = "box")
+    @Fetch(FetchMode.JOIN)
     private Set<Order> orders = new HashSet<>();
-
-
 }

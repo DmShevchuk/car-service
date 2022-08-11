@@ -1,6 +1,9 @@
 package com.example.carservice.entities;
 
+import com.example.carservice.security.Role;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @Setter
 public class User {
@@ -25,20 +29,19 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "role")
+    private Role role;
+
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "id_of_role")
-    private Role role;
+    @OneToOne(mappedBy = "user")
+    private Employee employee;
 
     @OneToMany(mappedBy = "user")
+    @Fetch(FetchMode.JOIN)
     private Set<Order> orders = new HashSet<>();
-
-    @OneToOne
-    @JoinColumn(name = "id_of_discount")
-    private Discount discount;
 }

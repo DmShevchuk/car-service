@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "service_type")
@@ -16,11 +16,11 @@ public class ServiceType {
     @Column(name = "service_type_id")
     private Long id;
 
-    @Column(name = "service_type_name")
+    @Column(name = "service_name")
     private String serviceName;
 
     @Column(name = "duration")
-    private Time duration;
+    private LocalTime duration;
 
     @Column(name = "price")
     private Long price;

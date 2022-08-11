@@ -16,8 +16,8 @@ public class Discount {
     private Long id;
 
     @Column(name = "min_discount")
-    private Long minDiscount;
+    private Float minDiscount;
 
     @Column(name = "max_discount")
-    private Long maxDiscount;
+    private Float maxDiscount;
 }
