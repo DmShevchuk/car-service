@@ -55,8 +55,6 @@ public class ServiceTypeServiceTest {
                 .doReturn(serviceType)
                 .when(serviceTypeRepo)
                 .save(serviceType);
-
-        Mockito.when(serviceTypeRepo.save(serviceType)).thenReturn(serviceType);
         Long serviceId = serviceTypeService.add(serviceType).getId();
         Mockito.verify(serviceTypeRepo, Mockito.times(1)).save(serviceType);
         Assertions.assertEquals(serviceType.getId(), serviceId);
@@ -72,6 +70,7 @@ public class ServiceTypeServiceTest {
                 .findById(id);
         ServiceType createdServiceType = serviceTypeRepo.findById(id).get();
         Mockito.verify(serviceTypeRepo, Mockito.times(1)).findById(id);
+        assert serviceType != null;
         Assertions.assertEquals(createdServiceType.getId(), serviceType.getId());
     }
 
@@ -83,7 +82,6 @@ public class ServiceTypeServiceTest {
                 .doReturn(page)
                 .when(serviceTypeRepo)
                 .findAll(pageable);
-        Mockito.when(serviceTypeRepo.findAll(pageable)).thenReturn(page);
         Page<ServiceType> serviceTypes = serviceTypeService.getAll(pageable);
         Mockito.verify(serviceTypeRepo, Mockito.times(1)).findAll(pageable);
         Assertions.assertEquals(page, serviceTypes);

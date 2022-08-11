@@ -1,7 +1,6 @@
 package com.example.carservice.services;
 
 import com.example.carservice.entities.Order;
-import com.example.carservice.entities.ServiceType;
 import com.example.carservice.exceptions.entities.EntityNotFoundException;
 import com.example.carservice.repos.OrderRepo;
 import com.example.carservice.services.factories.ConfirmationFactory;
@@ -57,7 +56,7 @@ public class OrderServiceTest {
 
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
-        
+
         order = new Order();
         order.setId(orderId);
         order.setDateStart(date);
@@ -75,8 +74,6 @@ public class OrderServiceTest {
                 .doReturn(order)
                 .when(orderRepo)
                 .save(order);
-
-        Mockito.when(orderRepo.save(order)).thenReturn(order);
         Long orderId = orderService.create(order).getId();
         Mockito.verify(orderRepo, Mockito.times(1)).save(order);
         Assertions.assertEquals(order.getId(), orderId);
@@ -92,6 +89,7 @@ public class OrderServiceTest {
                 .findById(orderId);
         Order createdOrder = orderRepo.findById(orderId).get();
         Mockito.verify(orderRepo, Mockito.times(1)).findById(orderId);
+        assert order != null;
         Assertions.assertEquals(createdOrder.getId(), order.getId());
     }
 
@@ -103,10 +101,9 @@ public class OrderServiceTest {
                 .doReturn(page)
                 .when(orderRepo)
                 .findAll(pageable);
-        Mockito.when(orderRepo.findAll(pageable)).thenReturn(page);
-        Page<Order> serviceTypes = orderService.getAll(pageable);
+        Page<Order> orders = orderService.getAll(pageable);
         Mockito.verify(orderRepo, Mockito.times(1)).findAll(pageable);
-        Assertions.assertEquals(page, serviceTypes);
+        Assertions.assertEquals(page, orders);
     }
 
 
@@ -123,6 +120,4 @@ public class OrderServiceTest {
         );
         Mockito.verify(orderRepo, Mockito.times(1)).findById(orderId);
     }
-
-
 }
