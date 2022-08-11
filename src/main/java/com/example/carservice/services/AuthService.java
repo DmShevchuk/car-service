@@ -51,7 +51,7 @@ public class AuthService {
 
 
     /**
-     * Получение нового aceess-токена, который включает email и роль пользователя
+     * Получение нового access-токена, который включает email и роль пользователя
      * */
     public AccessTokenResponseDTO getNewAccessToken(String refreshToken) throws AuthenticationException {
         if (jwtProvider.isRefreshTokenValid(refreshToken)) {
