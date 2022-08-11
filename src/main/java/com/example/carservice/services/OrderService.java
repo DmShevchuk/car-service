@@ -3,6 +3,7 @@ package com.example.carservice.services;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Box;
 import com.example.carservice.entities.Order;
+import com.example.carservice.entities.OrderStatus;
 import com.example.carservice.entities.User;
 import com.example.carservice.entities.enums.OrderStatusEnum;
 import com.example.carservice.exceptions.EntityNotFoundException;
@@ -60,9 +61,12 @@ public class OrderService {
         String previousStatusName = order.getOrderStatus().getStatusName();
         remove(id);
         try {
-            Order newOrder = create(orderFactory.buildOrder(orderSaveDTO));
+            Order newOrder = orderFactory.buildOrder(orderSaveDTO);
             confirmationFactory.createConfirmation(newOrder);
+            System.out.println("1-----------1");
+            System.out.println(newOrder.getId());
             newOrder.setId(id);
+            System.out.println(newOrder.getId());
             return orderRepo.save(newOrder);
         }catch (Exception e){
             changeStatus(id, previousStatusName);
@@ -127,7 +131,8 @@ public class OrderService {
     }
 
     public Page<Order> getAllByUserAndStatus(User user, OrderStatusEnum orderStatus, Pageable pageable) {
-        return orderRepo.findAll(specificationBuilder.getUserOrders(user, orderStatus), pageable);
+        OrderStatus orderSt = orderStatusService.getOrderStatusByName(orderStatus.toString());
+        return orderRepo.findAll(specificationBuilder.getUserOrders(user, orderSt), pageable);
     }
 
     @Transactional

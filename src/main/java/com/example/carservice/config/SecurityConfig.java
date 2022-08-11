@@ -4,9 +4,12 @@ import com.example.carservice.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,13 +37,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/auth/login",
                         "/api/v1/auth/token",
                         "/api/v1/confirmation/*").permitAll()
-//                .antMatchers("/api/v1/auth/refresh").authenticated()
-//                .antMatchers("/api/v1/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin().defaultSuccessUrl("/swagger-ui/#").
+                and().
+                httpBasic(Customizer.withDefaults()).
+                logout().logoutUrl("/logout").
+                logoutSuccessUrl("/login");
 
     }
 

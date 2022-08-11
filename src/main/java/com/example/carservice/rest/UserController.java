@@ -48,7 +48,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') || @accessValidator.canWorkWithUser(#id)")
     public Page<OrderDTO> getAllUserOrders(@PathVariable Long id,
-                                           @RequestParam("orderStatus") OrderStatusEnum orderStatus,
+                                           @RequestParam(value = "orderStatus") OrderStatusEnum orderStatus,
                                            @PageableDefault Pageable pageable){
         User user = userService.getUserById(id);
         Page<Order> orders = orderService.getAllByUserAndStatus(user, orderStatus, pageable);
