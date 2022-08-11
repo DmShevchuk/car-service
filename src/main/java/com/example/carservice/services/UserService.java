@@ -1,6 +1,6 @@
 package com.example.carservice.services;
 
-import com.example.carservice.dto.user.UserAppDTO;
+import com.example.carservice.security.UserAppDTO;
 import com.example.carservice.entities.User;
 import com.example.carservice.exceptions.entities.EmailAlreadyExistsException;
 import com.example.carservice.exceptions.entities.EntityNotFoundException;
@@ -69,6 +69,9 @@ public class UserService implements UserDetailsService {
      * */
     @Transactional
     public User update(Long id, User user) {
+        if (user.getEmail() != null & userRepo.existsByEmail(user.getEmail())) {
+            throw new EmailAlreadyExistsException(user.getEmail());
+        }
         user.setId(id);
         return userRepo.save(user);
     }

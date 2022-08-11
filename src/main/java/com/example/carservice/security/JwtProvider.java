@@ -1,6 +1,5 @@
 package com.example.carservice.security;
 
-import com.example.carservice.dto.user.UserAppDTO;
 import com.example.carservice.exceptions.auth.AuthenticationException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

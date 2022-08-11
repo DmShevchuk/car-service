@@ -35,13 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/api/v1/auth/login",
                         "/api/v1/auth/token",
-                        "/api/v1/confirmation/*").permitAll()
+                        "/api/v1/confirmation/*", "/info/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Override
