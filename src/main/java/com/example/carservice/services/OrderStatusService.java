@@ -16,34 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderStatusService {
     private final OrderStatusRepo orderStatusRepo;
 
-    @Transactional
-    public OrderStatus add(OrderStatus orderStatus) {
-        if (orderStatusRepo.existsByStatusName(orderStatus.getStatusName())) {
-            throw new OrderStatusAlreadyExistsException(orderStatus.getStatusName());
-        }
-        return orderStatusRepo.save(orderStatus);
-    }
-
-    @Transactional
-    public OrderStatus update(Long id, OrderStatus orderStatus) {
-        orderStatus.setId(id);
-        return orderStatusRepo.save(orderStatus);
-    }
-
-    public Page<OrderStatus> getAll(Pageable pageable) {
-        return orderStatusRepo.findAll(pageable);
-    }
-
-    @Transactional
-    public void remove(Long id) {
-        orderStatusRepo.deleteById(id);
-    }
-
-    public OrderStatus getOrderStatusById(Long id) {
-        return orderStatusRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Order status", id));
-    }
-
     public OrderStatus getOrderStatusByName(String name) {
         return orderStatusRepo.findOrderStatusesByStatusName(name)
                 .orElseThrow(() -> new OrderStatusNotFoundException(name));

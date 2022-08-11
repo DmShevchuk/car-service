@@ -57,10 +57,13 @@ public class UserService implements UserDetailsService {
         return userRepo.save(user);
     }
 
+    public User findUserByEmail(String email){
+        return userRepo.findUserByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+    }
 
     public UserAppDTO loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findUserByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+        User user = findUserByEmail(username);
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().getAuthority()));
         return new UserAppDTO(user.getEmail(), user.getPassword(), authorities);

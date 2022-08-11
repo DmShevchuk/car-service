@@ -41,7 +41,7 @@ public class JwtProvider {
         LocalDateTime expiredAt = createdAt.plusMinutes(accessExpirationPeriodInMinutes);
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .setExpiration(Date.from(expiredAt.toInstant(ZoneOffset.ofHours(3))))
+                .setExpiration(Date.from(expiredAt.toInstant(ZoneOffset.ofHours(hoursFromGMT))))
                 .signWith(generateKey(accessSecret.getBytes()))
                 .claim("roles", user.getAuthorities())
                 .compact();
@@ -52,7 +52,7 @@ public class JwtProvider {
         LocalDateTime expiredAt = createdAt.plusDays(refreshExpirationPeriodInDays);
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .setExpiration(Date.from(expiredAt.toInstant(ZoneOffset.ofHours(3))))
+                .setExpiration(Date.from(expiredAt.toInstant(ZoneOffset.ofHours(hoursFromGMT))))
                 .signWith(generateKey(refreshSecret.getBytes()))
                 .claim("roles", user.getAuthorities())
                 .compact();

@@ -2,6 +2,8 @@ package com.example.carservice.entities;
 
 import com.example.carservice.security.Role;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -40,5 +42,6 @@ public class User {
     private Employee employee;
 
     @OneToMany(mappedBy = "user")
+    @Fetch(FetchMode.JOIN)
     private Set<Order> orders = new HashSet<>();
 }

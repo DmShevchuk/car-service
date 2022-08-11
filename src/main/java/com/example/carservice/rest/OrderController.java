@@ -4,6 +4,7 @@ import com.example.carservice.dto.order.OrderDTO;
 import com.example.carservice.dto.order.OrderPatchDTO;
 import com.example.carservice.dto.order.OrderSaveDTO;
 import com.example.carservice.entities.Order;
+import com.example.carservice.security.AccessValidator;
 import com.example.carservice.services.OrderService;
 import com.example.carservice.services.factories.ConfirmationFactory;
 import com.example.carservice.services.factories.OrderFactory;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,10 +29,12 @@ public class OrderController {
     private final OrderService orderService;
     private final ConfirmationFactory confirmationFactory;
     private final OrderFactory orderFactory;
+    private final AccessValidator accessValidator;
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('OPERATOR') || hasRole('USER')")
     public OrderDTO add(@Valid @RequestBody OrderSaveDTO orderSaveDTO) throws ParseException {
         Order order = orderService.create(
                 orderFactory.buildOrder(orderSaveDTO)
@@ -42,6 +46,7 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<OrderDTO> getAll(@PageableDefault Pageable pageable) {
         Page<Order> orders = orderService.getAll(pageable);
         return orders.map(OrderDTO::toDTO);
@@ -50,6 +55,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO getOrderById(@PathVariable Long id) {
         return OrderDTO.toDTO(orderService.getOrderById(id));
     }
@@ -57,14 +63,23 @@ public class OrderController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO update(@PathVariable Long id,
                            @Valid @RequestBody OrderSaveDTO orderSaveDTO) {
         return OrderDTO.toDTO(orderService.update(id, orderSaveDTO));
     }
 
+    @PatchMapping("/{id}/check-in")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
+    public OrderDTO clientCheckIn(@PathVariable Long id) {
+        return OrderDTO.toDTO(orderService.clientCheckIn(id));
+    }
+
 
     @PatchMapping("/{id}/statuses")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public OrderDTO changeStatus(@PathVariable Long id,
                                  @Valid @RequestBody OrderPatchDTO orderPatchDTO) {
         String newStatus = orderPatchDTO.getOrderStatus().toString();
@@ -74,6 +89,7 @@ public class OrderController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') || @accessValidator.canChangeOrder(#id)")
     public String delete(@PathVariable Long id) {
         orderService.remove(id);
         return String.format("Order with id=%d was deleted successfully!", id);

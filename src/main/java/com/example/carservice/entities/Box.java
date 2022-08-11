@@ -2,6 +2,8 @@ package com.example.carservice.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -34,5 +36,6 @@ public class Box {
     private Boolean twentyFourHour = false;
 
     @OneToMany(mappedBy = "box")
+    @Fetch(FetchMode.JOIN)
     private Set<Order> orders = new HashSet<>();
 }

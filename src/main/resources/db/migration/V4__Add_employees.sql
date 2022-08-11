@@ -10,10 +10,14 @@ CREATE TABLE IF NOT EXISTS employees
     id_of_box      INTEGER,
     CONSTRAINT fk_box
         FOREIGN KEY (id_of_box)
-            REFERENCES boxes (box_id),
+            REFERENCES boxes (box_id)
+                ON DELETE CASCADE,
 
     id_of_discount INTEGER,
     CONSTRAINT fk_discount
         FOREIGN KEY (id_of_discount)
             REFERENCES discounts (discount_id)
 );
+
+INSERT INTO users (user_name, middle_name, last_name, role, email, password)
+VALUES ('Admin', 'Admin', 'Admin', 0, 'a@a.ru', '$2a$10$A72S5L1hWMyu5Iy7QXcy3e/6h2DGyzBQC52rFM8uSA7XtDjHlpMOa')
